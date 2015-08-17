@@ -26,7 +26,6 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-    //view did load
     override func viewDidLoad() {
         super.viewDidLoad()
 
