@@ -419,6 +419,7 @@
 				FA73F6131B82644200E35884 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA73F6141B82644200E35884 /* Build configuration list for PBXNativeTarget "Power PongTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +428,7 @@
 				FA73F6161B82644200E35884 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
