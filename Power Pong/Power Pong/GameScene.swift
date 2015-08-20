@@ -11,8 +11,8 @@ import SpriteKit
 let kPaddleWidth: CGFloat = 20.0 //width of the paddles
 let kPaddleHeight: CGFloat = 80.0 //height of the paddles
 let kBallRadius: CGFloat = 15.0 //radius of the moving ball
-let kStartingVelocityX: CGFloat = 150.0 //starting velocity x value for moving the ball
-let kStartingVelocityY: CGFloat = -150.0 //starting velocity y value for moving the ball
+let kStartingVelocityX: CGFloat = 300.0 //starting velocity x value for moving the ball
+let kStartingVelocityY: CGFloat = -300.0 //starting velocity y value for moving the ball
 let kVelocityMultFactor: CGFloat = 1.05 //multiply factor for speeding up the ball after some time
 let kIpadMultFactor: CGFloat = 2.0 //multiply factor for ipad object scaling
 let kSpeedupInterval: CGFloat = 5.0 //interval after which the speedUpTheBall method is called
@@ -30,6 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var isPlayingGame: Bool = false
     //ball node
     var ballNode : SKSpriteNode?
+    var fireBall : SKEmitterNode?
     //paddle nodes
     var playerOnePaddleNode : SKSpriteNode!
     var playerTwoPaddleNode : SKSpriteNode!
@@ -169,6 +170,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             ballRadius *= kIpadMultFactor;
         }
         
+        
+        
+        
         //Create the ball
         self.ballNode = SKSpriteNode(imageNamed: "circleNode.png")
         self.ballNode!.size = CGSizeMake(ballWidth, ballHeight)
@@ -183,6 +187,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.ballNode!.physicsBody!.allowsRotation = false
         self.ballNode!.position = CGPointMake(self.size.width / 2.0, self.size.height / 2.0)
         self.addChild(self.ballNode!)
+
+        
         
         var startingVelocityX: CGFloat = kStartingVelocityX
         var startingVelocityY: CGFloat = kStartingVelocityY
@@ -195,6 +201,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         self.ballNode!.physicsBody!.velocity = CGVectorMake(startingVelocityX, startingVelocityY)
         self.speedupTimer = NSTimer(timeInterval: NSTimeInterval(kSpeedupInterval), target: self, selector: "speedUpTheBall", userInfo: nil, repeats: true)
+        
+        //Create fire
+
+        
+        
+        self.fireBall = SKEmitterNode(fileNamed: "exampleFire")
+        self.ballNode!.addChild(self.fireBall!)
+        //self.fireBall?.emissionAngle = 2 - atan(startingVelocityY / startingVelocityX)
+        self.fireBall?.emissionAngle = atan2(self.ballNode!.physicsBody!.velocity.dx , self.ballNode!.physicsBody!.velocity.dy)
+        self.fireBall?.targetNode = self
+        
     }
     
     func restartTheGame() {
@@ -316,6 +333,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             secondBody = contact.bodyA
         }
         //Check if we have a ball with a corner contact
+        /*
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == cornerCategory {
             //ball touched left side
             if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
@@ -333,8 +351,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
+
+            
         //Check if we have a ball and pad contact
-        else if(firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory){
+        else  */if(firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory){
             self.runAction(self.bounceSoundAction)
             //you can react here if you want to customize the ball movement or direction
             //in original pong direction of the ball after it hits the paddle depends on
@@ -361,6 +381,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
             }
         }
+        
+        
+        
+        //change the flame direction
+       // println(self.fireBall?.emissionAngle)
+        //self.fireBall?.emissionAngle = atan(self.ballNode!.physicsBody!.velocity.dy / self.ballNode!.physicsBody!.velocity.dx)
+        //println(atan(self.ballNode!.physicsBody!.velocity.dy / self.ballNode!.physicsBody!.velocity.dx))
+        self.fireBall?.emissionAngle = CGFloat(M_PI ) + atan2(self.ballNode!.physicsBody!.velocity.dy,self.ballNode!.physicsBody!.velocity.dx)
+        
+        //println(atan2(self.ballNode!.physicsBody!.velocity.dy, self.ballNode!.physicsBody!.velocity.dx))
+        
     }
     
     

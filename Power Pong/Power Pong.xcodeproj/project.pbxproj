@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA3E8DA11B8505F400AFA181 /* exampleFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = FA3E8D9F1B8505F400AFA181 /* exampleFire.sks */; };
+		FA3E8DA21B8505F400AFA181 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3E8DA01B8505F400AFA181 /* spark.png */; };
 		FA73F5F41B82644200E35884 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73F5F31B82644200E35884 /* AppDelegate.swift */; };
 		FA73F5F61B82644200E35884 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = FA73F5F51B82644200E35884 /* GameScene.sks */; };
 		FA73F5F81B82644200E35884 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73F5F71B82644200E35884 /* GameScene.swift */; };
@@ -28,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA3E8D9F1B8505F400AFA181 /* exampleFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = exampleFire.sks; sourceTree = "<group>"; };
+		FA3E8DA01B8505F400AFA181 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		FA73F5EE1B82644200E35884 /* Power Pong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Power Pong.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA73F5F21B82644200E35884 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA73F5F31B82644200E35884 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 				FA73F5FE1B82644200E35884 /* Images.xcassets */,
 				FA73F6001B82644200E35884 /* LaunchScreen.xib */,
 				FA73F5F11B82644200E35884 /* Supporting Files */,
+				FA3E8D9F1B8505F400AFA181 /* exampleFire.sks */,
+				FA3E8DA01B8505F400AFA181 /* spark.png */,
 			);
 			path = "Power Pong";
 			sourceTree = "<group>";
@@ -199,6 +205,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA73F6021B82644200E35884 /* LaunchScreen.xib in Resources */,
+				FA3E8DA21B8505F400AFA181 /* spark.png in Resources */,
+				FA3E8DA11B8505F400AFA181 /* exampleFire.sks in Resources */,
 				FA73F5FF1B82644200E35884 /* Images.xcassets in Resources */,
 				FA73F5F61B82644200E35884 /* GameScene.sks in Resources */,
 				FA73F5FD1B82644200E35884 /* Main.storyboard in Resources */,
