@@ -13,9 +13,9 @@ let kPaddleHeight: CGFloat = 80.0 //height of the paddles
 let kBallRadius: CGFloat = 15.0 //radius of the moving ball
 let kStartingVelocityX: CGFloat = 150.0 //starting velocity x value for moving the ball
 let kStartingVelocityY: CGFloat = -150.0 //starting velocity y value for moving the ball
-let kVelocityMultFactor: CGFloat = 1.05 //multiply factor for speeding up the ball after some time
+let kVelocityMultFactor: CGFloat = 1.1 //multiply factor for speeding up the ball after some time
+let kSpeedupInterval: CGFloat = 1.0 //interval after which the speedUpTheBall method is called
 let kIpadMultFactor: CGFloat = 2.0 //multiply factor for ipad object scaling
-let kSpeedupInterval: CGFloat = 5.0 //interval after which the speedUpTheBall method is called
 let kScoreFontSize: CGFloat = 30.0 //font size of score label nodes
 let kRestartGameWidthHeight: CGFloat = 50.0 //width and height of restart node
 let kPaddleMoveMult: CGFloat = 1.5 //multiply factor when moving fingers to move the paddles, by moving finger for N pt it will move it for N * kPaddleMoveMult
@@ -31,8 +31,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     //ball node
     var ballNode : SKSpriteNode?
     //paddle nodes
-    var playerOnePaddleNode : SKSpriteNode!
-    var playerTwoPaddleNode : SKSpriteNode!
+    var playerOnePaddleNode : SKShapeNode!
+    var playerTwoPaddleNode : SKShapeNode!
     //score label nodes
     var playerOneScoreNode : SKLabelNode!
     var playerTwoScoreNode : SKLabelNode!
@@ -98,17 +98,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         //Paddles
-        self.playerOnePaddleNode = SKSpriteNode(color: SKColor.whiteColor(), size: CGSizeMake(paddleWidth, paddleHeight))
-        self.playerTwoPaddleNode = SKSpriteNode(color: SKColor.whiteColor(), size: CGSizeMake(paddleWidth, paddleHeight))
-        self.playerOnePaddleNode.position = CGPointMake(self.playerOnePaddleNode.size.width, CGRectGetMidY(self.frame))
-        self.playerTwoPaddleNode.position = CGPointMake(CGRectGetMaxX(self.frame) - self.playerTwoPaddleNode.size.width, CGRectGetMidY(self.frame))
-        self.playerOnePaddleNode.physicsBody = SKPhysicsBody(rectangleOfSize: self.playerOnePaddleNode.size)
+        //Create the shape of the player 1 paddle
+        var path = CGPathCreateMutable();
+        //Make the top part
+        CGPathMoveToPoint(path, nil, -paddleWidth, 0);
+        CGPathAddLineToPoint(path, nil, -paddleWidth, paddleHeight/2)
+        CGPathAddLineToPoint(path, nil, 0, paddleHeight/2)
+        //Make the arc
+        CGPathAddArc(path, nil, -(paddleHeight/(2*CGFloat(tan(0.5*M_PI_4)))), CGFloat(0), CGFloat(paddleHeight/(2*CGFloat(sin(0.5*M_PI_4)))),  CGFloat(0.5*M_PI_4), CGFloat(-0.5*M_PI_4), true)
+        //Make the bottom part
+        CGPathAddLineToPoint(path, nil, 0, -paddleHeight/2)
+        CGPathAddLineToPoint(path, nil, -paddleWidth, -paddleHeight/2)
+        CGPathAddLineToPoint(path, nil, -paddleWidth, 0)
+        
+        self.playerOnePaddleNode = SKShapeNode(path: path)
+        self.playerOnePaddleNode.position = CGPointMake(2*paddleWidth, CGRectGetMidY(self.frame))
+        self.playerOnePaddleNode.lineWidth = 0
+        self.playerOnePaddleNode.fillColor = SKColor.greenColor()
+        self.playerOnePaddleNode.physicsBody = SKPhysicsBody(edgeChainFromPath: path)
         self.playerOnePaddleNode.physicsBody!.categoryBitMask = paddleCategory
-        self.playerTwoPaddleNode.physicsBody = SKPhysicsBody(rectangleOfSize: self.playerTwoPaddleNode.size)
-        self.playerTwoPaddleNode.physicsBody!.categoryBitMask = paddleCategory
         self.playerOnePaddleNode.physicsBody!.dynamic = false
-        self.playerTwoPaddleNode.physicsBody!.dynamic = false
         self.addChild(self.playerOnePaddleNode)
+        
+        //Create the shape of the player 2 paddle
+        var path2 = CGPathCreateMutable();
+        //Make the top part
+        CGPathMoveToPoint(path2, nil, paddleWidth, 0);
+        CGPathAddLineToPoint(path2, nil, paddleWidth, paddleHeight/2)
+        CGPathAddLineToPoint(path2, nil, 0, paddleHeight/2)
+        //Make the arc
+        CGPathAddArc(path2, nil, (paddleHeight/(2*CGFloat(tan(0.5*M_PI_4)))), CGFloat(0), CGFloat(paddleHeight/(2*CGFloat(sin(0.5*M_PI_4)))),  CGFloat(3.5*M_PI_4), CGFloat(4.5*M_PI_4), false)
+        //Make the bottom part
+        CGPathAddLineToPoint(path2, nil, 0, -paddleHeight/2)
+        CGPathAddLineToPoint(path2, nil, paddleWidth, -paddleHeight/2)
+        CGPathAddLineToPoint(path2, nil, paddleWidth, 0)
+        
+        self.playerTwoPaddleNode = SKShapeNode(path: path2)
+        self.playerTwoPaddleNode.position = CGPointMake(CGRectGetMaxX(self.frame) - 2*paddleWidth, CGRectGetMidY(self.frame))
+        self.playerTwoPaddleNode.lineWidth = 0
+        self.playerTwoPaddleNode.fillColor = SKColor.orangeColor()
+        self.playerTwoPaddleNode.physicsBody = SKPhysicsBody(edgeChainFromPath: path2)
+        self.playerTwoPaddleNode.physicsBody!.categoryBitMask = paddleCategory
+        self.playerTwoPaddleNode.physicsBody!.dynamic = false
         self.addChild(self.playerTwoPaddleNode)
         
         //Score Labels
@@ -193,8 +224,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if self.playerOneScore > self.playerTwoScore {
             startingVelocityX = -startingVelocityX
         }
+        //Start ball and timer to speedup the ball
         self.ballNode!.physicsBody!.velocity = CGVectorMake(startingVelocityX, startingVelocityY)
-        self.speedupTimer = NSTimer(timeInterval: NSTimeInterval(kSpeedupInterval), target: self, selector: "speedUpTheBall", userInfo: nil, repeats: true)
+        self.speedupTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(kSpeedupInterval), target: self, selector: Selector("speedUpTheBall"), userInfo: nil, repeats: true)
     }
     
     func restartTheGame() {
@@ -268,8 +300,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         var x: CGFloat = self.playerOnePaddleNode.position.x
         var y: CGFloat = self.playerOnePaddleNode.position.y + (newLocation.y - previousLocation.y) * kPaddleMoveMult
-        var yMax: CGFloat = self.size.height - self.playerOnePaddleNode.size.width / 2.0 - self.playerOnePaddleNode.size.height / 2.0
-        var yMin: CGFloat = self.playerOnePaddleNode.size.width / 2.0 + self.playerOnePaddleNode.size.height / 2.0
+        //In case it is the iPad there is a need to multiply the sizes
+        var multiplier:CGFloat = 1
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
+            multiplier = kIpadMultFactor
+        }
+        //Define the max and min positions that the paddler can move
+        var yMax: CGFloat = self.size.height - multiplier*kPaddleHeight / 4.0 - multiplier*kPaddleHeight / 2.0
+        var yMin: CGFloat = multiplier*kPaddleHeight / 4.0 + multiplier*kPaddleHeight / 2.0
         if y > yMax {
             y = yMax
         }
@@ -290,8 +328,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         var x: CGFloat = self.playerTwoPaddleNode.position.x
         var y: CGFloat = self.playerTwoPaddleNode.position.y + (newLocation.y - previousLocation.y) * kPaddleMoveMult
-        var yMax: CGFloat = self.size.height - self.playerTwoPaddleNode.size.width / 2.0 - self.playerTwoPaddleNode.size.height / 2.0
-        var yMin: CGFloat = self.playerTwoPaddleNode.size.width / 2.0 + self.playerTwoPaddleNode.size.height / 2.0
+        //In case it is the iPad there is a need to multiply the sizes
+        var multiplier:CGFloat = 1
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
+            multiplier = kIpadMultFactor
+        }
+        //Define the max and min positions that the paddler can move
+        var yMax: CGFloat = self.size.height - multiplier*kPaddleHeight / 4.0 - multiplier*kPaddleHeight / 2.0
+        var yMin: CGFloat = multiplier*kPaddleHeight / 4.0 + multiplier*kPaddleHeight / 2.0
         if y > yMax {
             y = yMax
         }
@@ -340,26 +384,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //in original pong direction of the ball after it hits the paddle depends on
             //what part of the paddle does it hit
             //so you can customize it as you want
-            var paddleNode: SKSpriteNode = secondBody.node as! SKSpriteNode
-            var ballPosition: CGPoint = self.ballNode!.position
-            var firstThird: CGFloat = (paddleNode.position.y - paddleNode.size.height / 2.0) + paddleNode.size.height * (1.0 / 3.0)
-            var secondThird: CGFloat = (paddleNode.position.y - paddleNode.size.height / 2.0) + paddleNode.size.height * (2.0 / 3.0)
-            var dx: CGFloat = self.ballNode!.physicsBody!.velocity.dx
-            var dy: CGFloat = self.ballNode!.physicsBody!.velocity.dy
-            if ballPosition.y < firstThird {
-                //ball hits the left part
-                if dy > 0 {
-                    self.ballNode!.physicsBody!.velocity = CGVectorMake(dx, -dy)
-                }
-            }
-            else {
-                if ballPosition.y > secondThird {
-                    //ball hits the left part
-                    if dy < 0 {
-                        self.ballNode!.physicsBody!.velocity = CGVectorMake(dx, -dy)
-                    }
-                }
-            }
+//            var paddleNode: SKSpriteNode = secondBody.node as! SKSpriteNode
+//            var ballPosition: CGPoint = self.ballNode!.position
+//            var firstThird: CGFloat = (paddleNode.position.y - paddleNode.size.height / 2.0) + paddleNode.size.height * (1.0 / 3.0)
+//            var secondThird: CGFloat = (paddleNode.position.y - paddleNode.size.height / 2.0) + paddleNode.size.height * (2.0 / 3.0)
+//            var dx: CGFloat = self.ballNode!.physicsBody!.velocity.dx
+//            var dy: CGFloat = self.ballNode!.physicsBody!.velocity.dy
+//            if ballPosition.y < firstThird {
+//                //ball hits the left part
+//                if dy > 0 {
+//                    self.ballNode!.physicsBody!.velocity = CGVectorMake(dx, -dy)
+//                }
+//            }
+//            else {
+//                if ballPosition.y > secondThird {
+//                    //ball hits the left part
+//                    if dy < 0 {
+//                        self.ballNode!.physicsBody!.velocity = CGVectorMake(dx, -dy)
+//                    }
+//                }
+//            }
         }
     }
     
