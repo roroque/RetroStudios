@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */; };
+		1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */; };
+		1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */; };
+		1DDBD63D1B86E09000319EB0 /* GameBalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD63C1B86E09000319EB0 /* GameBalls.swift */; };
 		FA73F5F41B82644200E35884 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73F5F31B82644200E35884 /* AppDelegate.swift */; };
 		FA73F5F61B82644200E35884 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = FA73F5F51B82644200E35884 /* GameScene.sks */; };
 		FA73F5F81B82644200E35884 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73F5F71B82644200E35884 /* GameScene.swift */; };
@@ -28,6 +32,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1DDBD62D1B86AFD000319EB0 /* Power Pong-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Power Pong-Bridging-Header.h"; sourceTree = "<group>"; };
+		1DDBD62E1B86AFD100319EB0 /* DropDownItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownItem.h; sourceTree = "<group>"; };
+		1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownItem.m; sourceTree = "<group>"; };
+		1DDBD6301B86AFD100319EB0 /* DropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownMenu.h; sourceTree = "<group>"; };
+		1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownMenu.m; sourceTree = "<group>"; };
+		1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lobster_1.3.otf; sourceTree = "<group>"; };
+		1DDBD63C1B86E09000319EB0 /* GameBalls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBalls.swift; sourceTree = "<group>"; };
 		FA73F5EE1B82644200E35884 /* Power Pong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Power Pong.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA73F5F21B82644200E35884 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA73F5F31B82644200E35884 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +71,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1DDBD6341B86AFDE00319EB0 /* DropDownMenu */ = {
+			isa = PBXGroup;
+			children = (
+				1DDBD62E1B86AFD100319EB0 /* DropDownItem.h */,
+				1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */,
+				1DDBD6301B86AFD100319EB0 /* DropDownMenu.h */,
+				1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */,
+			);
+			name = DropDownMenu;
+			sourceTree = "<group>";
+		};
+		1DDBD6371B86CB6200319EB0 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		FA73F5E51B82644200E35884 = {
 			isa = PBXGroup;
 			children = (
@@ -81,13 +111,16 @@
 		FA73F5F01B82644200E35884 /* Power Pong */ = {
 			isa = PBXGroup;
 			children = (
+				1DDBD6341B86AFDE00319EB0 /* DropDownMenu */,
 				FA73F5F31B82644200E35884 /* AppDelegate.swift */,
+				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
 				FA73F5F51B82644200E35884 /* GameScene.sks */,
 				FA73F5F71B82644200E35884 /* GameScene.swift */,
 				FA73F5F91B82644200E35884 /* GameViewController.swift */,
 				FA73F5FB1B82644200E35884 /* Main.storyboard */,
 				FA73F5FE1B82644200E35884 /* Images.xcassets */,
 				FA73F6001B82644200E35884 /* LaunchScreen.xib */,
+				1DDBD6371B86CB6200319EB0 /* Fonts */,
 				FA73F5F11B82644200E35884 /* Supporting Files */,
 			);
 			path = "Power Pong";
@@ -96,6 +129,7 @@
 		FA73F5F11B82644200E35884 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1DDBD62D1B86AFD000319EB0 /* Power Pong-Bridging-Header.h */,
 				FA73F5F21B82644200E35884 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -202,6 +236,7 @@
 				FA73F5FF1B82644200E35884 /* Images.xcassets in Resources */,
 				FA73F5F61B82644200E35884 /* GameScene.sks in Resources */,
 				FA73F5FD1B82644200E35884 /* Main.storyboard in Resources */,
+				1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,8 +254,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */,
 				FA73F5F81B82644200E35884 /* GameScene.swift in Sources */,
+				1DDBD63D1B86E09000319EB0 /* GameBalls.swift in Sources */,
 				FA73F5FA1B82644200E35884 /* GameViewController.swift in Sources */,
+				1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */,
 				FA73F5F41B82644200E35884 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,9 +388,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "Power Pong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Power Pong/Power Pong-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -360,9 +401,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "Power Pong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Power Pong/Power Pong-Bridging-Header.h";
 			};
 			name = Release;
 		};

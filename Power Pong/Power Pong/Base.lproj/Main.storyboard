@@ -1,13 +1,102 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Lobster_1.3.otf">
+            <string>Lobster1.3</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="YEH-vH-qcK">
+            <objects>
+                <viewController id="nfs-jq-T5s" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GQZ-hK-czU"/>
+                        <viewControllerLayoutGuide type="bottom" id="gi7-aJ-TpW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rJd-zp-dYY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="b7J-mN-eKf">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Pong" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCj-AW-3Xk">
+                                <rect key="frame" x="183" y="37" width="235" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="235" id="DDm-Xj-APh"/>
+                                    <constraint firstAttribute="height" constant="52" id="LK2-90-pBU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Lobster1.3" family="Lobster 1.3" pointSize="50"/>
+                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Player2-1" translatesAutoresizingMaskIntoConstraints="NO" id="vac-SG-Zex">
+                                <rect key="frame" x="10" y="309" width="193" height="281"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="281" id="CaE-wc-NAN"/>
+                                    <constraint firstAttribute="width" constant="193" id="H6I-D2-qe7"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Player1-1" translatesAutoresizingMaskIntoConstraints="NO" id="mmJ-6z-UnS">
+                                <rect key="frame" x="397" y="309" width="193" height="281"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="193" id="kLQ-Pj-zi7"/>
+                                    <constraint firstAttribute="height" constant="281" id="xxJ-Zx-4P1"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFR-qB-1bC">
+                                <rect key="frame" x="260" y="97" width="81" height="52"/>
+                                <fontDescription key="fontDescription" name="STHeitiSC-Medium" family="Heiti SC" pointSize="40"/>
+                                <state key="normal" title="Play">
+                                    <color key="titleColor" red="0.85490196080000003" green="0.35686274509999999" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="show" id="CwG-kZ-zNE"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AtS-Qb-3AE" customClass="GameBalls" customModule="Power_Pong" customModuleProvider="target">
+                                <rect key="frame" x="361" y="109" width="213" height="259"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="KFR-qB-1bC" secondAttribute="centerX" constant="-0.5" id="1un-a7-1oB"/>
+                            <constraint firstAttribute="trailing" secondItem="mmJ-6z-UnS" secondAttribute="trailing" constant="10" id="24Z-XQ-iYc"/>
+                            <constraint firstAttribute="centerX" secondItem="fCj-AW-3Xk" secondAttribute="centerX" constant="-0.5" id="5NY-wh-APe"/>
+                            <constraint firstItem="b7J-mN-eKf" firstAttribute="bottom" secondItem="gi7-aJ-TpW" secondAttribute="top" id="9fJ-cs-7Pw"/>
+                            <constraint firstAttribute="trailing" secondItem="b7J-mN-eKf" secondAttribute="trailing" id="Bqm-OL-tvH"/>
+                            <constraint firstItem="b7J-mN-eKf" firstAttribute="leading" secondItem="rJd-zp-dYY" secondAttribute="leading" id="DvT-P2-k2C"/>
+                            <constraint firstItem="gi7-aJ-TpW" firstAttribute="top" secondItem="vac-SG-Zex" secondAttribute="bottom" constant="10" id="GON-6s-06F"/>
+                            <constraint firstAttribute="centerX" secondItem="KFR-qB-1bC" secondAttribute="centerX" constant="-0.5" id="KQx-O4-4kG"/>
+                            <constraint firstItem="fCj-AW-3Xk" firstAttribute="top" secondItem="GQZ-hK-czU" secondAttribute="bottom" constant="17" id="YcV-8f-BfA"/>
+                            <constraint firstItem="gi7-aJ-TpW" firstAttribute="top" secondItem="mmJ-6z-UnS" secondAttribute="bottom" constant="10" id="ZsW-52-0vf"/>
+                            <constraint firstItem="KFR-qB-1bC" firstAttribute="top" secondItem="fCj-AW-3Xk" secondAttribute="bottom" constant="8" id="c7y-cv-NJ3"/>
+                            <constraint firstItem="b7J-mN-eKf" firstAttribute="top" secondItem="rJd-zp-dYY" secondAttribute="top" id="gym-PM-U3L"/>
+                            <constraint firstItem="vac-SG-Zex" firstAttribute="leading" secondItem="rJd-zp-dYY" secondAttribute="leading" constant="10" id="lzl-Hh-62v"/>
+                            <constraint firstItem="gi7-aJ-TpW" firstAttribute="top" secondItem="KFR-qB-1bC" secondAttribute="bottom" constant="150" id="tb3-85-dhZ"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="KQx-O4-4kG"/>
+                                <exclude reference="tb3-85-dhZ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mNx-rP-Zp2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-432" y="236"/>
+        </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Power_Pong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="maK-i9-Uhn"/>
                         <viewControllerLayoutGuide type="bottom" id="khH-OB-KpY"/>
@@ -22,4 +111,9 @@
             </objects>
         </scene>
     </scenes>
+    <resources>
+        <image name="Background" width="1024" height="1024"/>
+        <image name="Player1-1" width="315" height="503"/>
+        <image name="Player2-1" width="315" height="503"/>
+    </resources>
 </document>

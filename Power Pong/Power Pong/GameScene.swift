@@ -52,6 +52,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bounceSoundAction : SKAction?
     var failSoundAction : SKAction?
     
+    var gameBalls: GameBalls?
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -201,7 +202,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         //Create the ball
-        self.ballNode = SKSpriteNode(imageNamed: "circleNode.png")
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let name = defaults.stringForKey("Ball")
+        {
+            self.ballNode = SKSpriteNode(imageNamed: "\(name).png")
+        }else{
+            self.ballNode = SKSpriteNode(imageNamed: "circleNode.png")
+        }
         self.ballNode!.size = CGSizeMake(ballWidth, ballHeight)
         self.ballNode!.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius)
         self.ballNode!.physicsBody!.categoryBitMask = ballCategory
