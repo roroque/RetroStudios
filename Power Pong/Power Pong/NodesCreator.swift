@@ -8,34 +8,6 @@
 
 import SpriteKit
 
-
-////Score Labels
-//self.playerOneScoreNode = SKLabelNode(fontNamed: "Helvetica")
-//
-//self.playerOneScoreNode.fontColor = SKColor.whiteColor()
-//self.playerOneScoreNode.fontSize = scoreFontSize
-//self.playerOneScoreNode.position = CGPointMake(size.width * 0.25, size.height - scoreFontSize * 2.0)
-//self.playerTwoScoreNode.position = CGPointMake(size.width * 0.75, size.height - scoreFontSize * 2.0)
-//
-//self.addChild(self.playerOneScoreNode)
-//self.addChild(self.playerTwoScoreNode)
-//
-////Restart node
-//self.restartGameNode = SKSpriteNode(imageNamed: "restartNode.png")
-//self.restartGameNode.size = CGSizeMake(restartNodeWidthHeight, restartNodeWidthHeight)
-//self.restartGameNode.position = CGPointMake(size.width / 2.0, size.height - restartNodeWidthHeight)
-//self.restartGameNode.hidden = true
-//self.addChild(self.restartGameNode)
-//
-////start game info node
-//self.startGameInfoNode = SKLabelNode(fontNamed: "Helvetica")
-//self.startGameInfoNode.fontColor = SKColor.whiteColor()
-//self.startGameInfoNode.fontSize = scoreFontSize
-//self.startGameInfoNode.position = CGPointMake(size.width / 2.0, size.height / 2.0)
-//self.startGameInfoNode.text = "Tap to start!"
-//self.addChild(self.startGameInfoNode)
-
-
 class NodesCreator: NSObject {
     
     static func createScoreLabel(font: String, fontSize: CGFloat, color: SKColor, xPos: CGFloat, yPos: CGFloat) -> SKLabelNode {
