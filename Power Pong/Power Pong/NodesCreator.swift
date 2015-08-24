@@ -52,6 +52,7 @@ class NodesCreator: NSObject {
         ballNode.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius)
         ballNode.physicsBody!.categoryBitMask = category
         ballNode.physicsBody!.contactTestBitMask = contact
+        ballNode.physicsBody!.collisionBitMask = cornerCategory | paddleCategory;
         ballNode.physicsBody!.linearDamping = 0.0
         ballNode.physicsBody!.angularDamping = 0.0
         ballNode.physicsBody!.restitution = 1.0
