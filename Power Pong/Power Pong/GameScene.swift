@@ -244,8 +244,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         powerUpShouldAppear++
         if powerUpShouldAppear >= powerUpTime
         {
+            if self.powerUp != nil
+            {
+                self.powerUp?.removeFromParent()
+            }
             powerUpShouldAppear = 0
-            powerUp = PowerUpController().getRandomPowerUp(self.size)
+            self.powerUp = PowerUpController().getRandomPowerUp(self.size)
             self.addChild(powerUp!)
         }
         
