@@ -126,7 +126,9 @@
         self.offsetX = self.dropDownItems.count * self.dropDownItems.count * self.itemSize.height / 28;
     }
     
-    [super setFrame:CGRectMake(self.originalFrame.origin.x - self.offsetX, self.originalFrame.origin.y, self.frame.size.width + self.gutterY, self.frame.size.height)];
+    //[super setFrame:CGRectMake(self.originalFrame.origin.x - self.offsetX, self.originalFrame.origin.y, self.frame.size.width + self.gutterY, self.frame.size.height)];
+    
+    [super setFrame:CGRectMake(0, 0, 0, 0)];
     
     self.menuButton.iconImage = self.menuIconImage;
     self.menuButton.text = self.menuText;
@@ -372,36 +374,36 @@
     CGFloat width = self.itemSize.width;
     CGFloat height = self.itemSize.height;
     
-    NSInteger count = index >= 2 ? 2 : index;
-    CGFloat slidingInOffect = self.slidingInOffset != -1 ? self.slidingInOffset : self.itemSize.width / 3;
-    
-    switch (self.type) {
-        case DropDownMenuTypeNormal:
-            // just take the default value
-            break;
-        case DropDownMenuTypeStack:
-            x += count * 2;
-            y = (count + 1) * 3;
-            width -= count * 4;
-            break;
-        case DropDownMenuTypeSlidingInBoth:
-            if (index % 2 != 0) {
-                slidingInOffect = -slidingInOffect;
-            }
-            x = slidingInOffect;
-            y = (index + 1) * (height + self.gutterY);
-            break;
-        case DropDownMenuTypeSlidingInFromLeft:
-            x = -slidingInOffect;
-            y = (index + 1) * (height + self.gutterY);
-            break;
-        case DropDownMenuTypeSlidingInFromRight:
-            x = slidingInOffect;
-            y = (index + 1) * (height + self.gutterY);
-            break;
-        default:
-            break;
-    }
+//    NSInteger count = index >= 2 ? 2 : index;
+//    CGFloat slidingInOffect = self.slidingInOffset != -1 ? self.slidingInOffset : self.itemSize.width / 3;
+//    
+//    switch (self.type) {
+//        case DropDownMenuTypeNormal:
+//            // just take the default value
+//            break;
+//        case DropDownMenuTypeStack:
+//            x += count * 2;
+//            y = (count + 1) * 3;
+//            width -= count * 4;
+//            break;
+//        case DropDownMenuTypeSlidingInBoth:
+//            if (index % 2 != 0) {
+//                slidingInOffect = -slidingInOffect;
+//            }
+//            x = slidingInOffect;
+//            y = (index + 1) * (height + self.gutterY);
+//            break;
+//        case DropDownMenuTypeSlidingInFromLeft:
+//            x = -slidingInOffect;
+//            y = (index + 1) * (height + self.gutterY);
+//            break;
+//        case DropDownMenuTypeSlidingInFromRight:
+//            x = slidingInOffect;
+//            y = (index + 1) * (height + self.gutterY);
+//            break;
+//        default:
+//            break;
+//    }
     
     if (self.direction == DropDownMenuDirectionUp) {
         if (self.isExpanding) {
@@ -445,6 +447,7 @@
         y = -y;
     }
     
+    //directions of the balls
     return CGRectMake(x, y, width, height);
 }
 
@@ -482,7 +485,7 @@
 {
     self.menuButton.iconImage = item.iconImage;
     self.object = item.object;
-    self.menuButton.text = item.text;
+    //self.menuButton.text = item.text;
     self.expanding = NO;
     self.selectedIndex = item.index;
     if (self.selectedItemChangeBlock) {

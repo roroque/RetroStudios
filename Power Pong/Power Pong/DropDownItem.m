@@ -38,7 +38,7 @@
 
 - (void)commonInit
 {
-    _paddingLeft = 5;
+    _paddingLeft = 0;
     [self initView];
 }
 
@@ -55,7 +55,8 @@
 {
     self.bgView = [[UIView alloc] init];
     self.bgView.userInteractionEnabled = NO;
-    self.bgView.backgroundColor = [UIColor colorWithRed:238.0/255 green:238.0/255 blue:238.0/255 alpha:1.0];
+    //self.bgView.backgroundColor = [UIColor colorWithRed:238.0/255 green:238.0/255 blue:238.0/255 alpha:1.0];
+    self.bgView.backgroundColor = [UIColor clearColor];
     self.bgView.layer.shadowColor = [UIColor grayColor].CGColor;
     self.bgView.layer.shadowOffset = CGSizeMake(0, 0);
     self.bgView.layer.shadowOpacity = 0.2;
