@@ -13,12 +13,14 @@ let kPaddleHeight: CGFloat = 80.0 //height of the paddles
 let kBallRadius: CGFloat = 15.0 //radius of the moving ball
 let kStartingVelocityX: CGFloat = 150.0 //starting velocity x value for moving the ball
 let kStartingVelocityY: CGFloat = -150.0 //starting velocity y value for moving the ball
-let kVelocityMultFactor: CGFloat = 1.1 //multiply factor for speeding up the ball after some time
+let kVelocityMultFactor: CGFloat = 1.03 //multiply factor for speeding up the ball after some time
 let kSpeedupInterval: CGFloat = 1.0 //interval after which the speedUpTheBall method is called
 let kIpadMultFactor: CGFloat = 2.0 //multiply factor for ipad object scaling
 let kScoreFontSize: CGFloat = 30.0 //font size of score label nodes
 let kRestartGameWidthHeight: CGFloat = 50.0 //width and height of restart node
 let kPaddleMoveMult: CGFloat = 1.5 //multiply factor when moving fingers to move the paddles, by moving finger for N pt it will move it for N * kPaddleMoveMult
+var powerUpShouldAppear = 0 //powerUp counter till some powerUp should appear
+let powerUpTime = 10//time till powerUp appears
 
 //categories for detecting contacts between nodes
 let  ballCategory : UInt32 = 0x1 << 0
@@ -30,6 +32,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var isPlayingGame: Bool = false
     //ball node
     var ballNode : SKSpriteNode?
+    //powerUp node
+    var powerUp : SKSpriteNode?
+    
+    //flaming
+    var flaming = false
+    var flames : SKEmitterNode?
+    var flamingTimer = 0
+    var flamingLimit = 3
+    
+    
+    
+    
     //paddle nodes
     var playerOnePaddleNode : SKShapeNode!
     var playerTwoPaddleNode : SKShapeNode!
@@ -99,75 +113,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         //Paddles
-        //Create the shape of the player 1 paddle
-        var path = CGPathCreateMutable();
-        //Make the top part
-        CGPathMoveToPoint(path, nil, -paddleWidth, 0);
-        CGPathAddLineToPoint(path, nil, -paddleWidth, paddleHeight/2)
-        CGPathAddLineToPoint(path, nil, 0, paddleHeight/2)
-        //Make the arc
-        CGPathAddArc(path, nil, -(paddleHeight/(2*CGFloat(tan(0.5*M_PI_4)))), CGFloat(0), CGFloat(paddleHeight/(2*CGFloat(sin(0.5*M_PI_4)))),  CGFloat(0.5*M_PI_4), CGFloat(-0.5*M_PI_4), true)
-        //Make the bottom part
-        CGPathAddLineToPoint(path, nil, 0, -paddleHeight/2)
-        CGPathAddLineToPoint(path, nil, -paddleWidth, -paddleHeight/2)
-        CGPathAddLineToPoint(path, nil, -paddleWidth, 0)
-        
-        self.playerOnePaddleNode = SKShapeNode(path: path)
-        self.playerOnePaddleNode.position = CGPointMake(2*paddleWidth, CGRectGetMidY(self.frame))
-        self.playerOnePaddleNode.lineWidth = 0
-        self.playerOnePaddleNode.fillColor = SKColor.greenColor()
-        self.playerOnePaddleNode.physicsBody = SKPhysicsBody(edgeChainFromPath: path)
-        self.playerOnePaddleNode.physicsBody!.categoryBitMask = paddleCategory
-        self.playerOnePaddleNode.physicsBody!.dynamic = false
+        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.greenColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
         self.addChild(self.playerOnePaddleNode)
-        
-        //Create the shape of the player 2 paddle
-        var path2 = CGPathCreateMutable();
-        //Make the top part
-        CGPathMoveToPoint(path2, nil, paddleWidth, 0);
-        CGPathAddLineToPoint(path2, nil, paddleWidth, paddleHeight/2)
-        CGPathAddLineToPoint(path2, nil, 0, paddleHeight/2)
-        //Make the arc
-        CGPathAddArc(path2, nil, (paddleHeight/(2*CGFloat(tan(0.5*M_PI_4)))), CGFloat(0), CGFloat(paddleHeight/(2*CGFloat(sin(0.5*M_PI_4)))),  CGFloat(3.5*M_PI_4), CGFloat(4.5*M_PI_4), false)
-        //Make the bottom part
-        CGPathAddLineToPoint(path2, nil, 0, -paddleHeight/2)
-        CGPathAddLineToPoint(path2, nil, paddleWidth, -paddleHeight/2)
-        CGPathAddLineToPoint(path2, nil, paddleWidth, 0)
-        
-        self.playerTwoPaddleNode = SKShapeNode(path: path2)
-        self.playerTwoPaddleNode.position = CGPointMake(CGRectGetMaxX(self.frame) - 2*paddleWidth, CGRectGetMidY(self.frame))
-        self.playerTwoPaddleNode.lineWidth = 0
-        self.playerTwoPaddleNode.fillColor = SKColor.orangeColor()
-        self.playerTwoPaddleNode.physicsBody = SKPhysicsBody(edgeChainFromPath: path2)
-        self.playerTwoPaddleNode.physicsBody!.categoryBitMask = paddleCategory
-        self.playerTwoPaddleNode.physicsBody!.dynamic = false
+        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.yellowColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
         self.addChild(self.playerTwoPaddleNode)
         
         //Score Labels
-        self.playerOneScoreNode = SKLabelNode(fontNamed: "Helvetica")
-        self.playerTwoScoreNode = SKLabelNode(fontNamed: "Helvetica")
-        self.playerOneScoreNode.fontColor = SKColor.whiteColor()
-        self.playerTwoScoreNode.fontColor = SKColor.whiteColor()
-        self.playerOneScoreNode.fontSize = scoreFontSize
-        self.playerTwoScoreNode.fontSize = scoreFontSize
-        self.playerOneScoreNode.position = CGPointMake(size.width * 0.25, size.height - scoreFontSize * 2.0)
-        self.playerTwoScoreNode.position = CGPointMake(size.width * 0.75, size.height - scoreFontSize * 2.0)
+        self.playerOneScoreNode = NodesCreator.createScoreLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width * 0.25, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerOneScoreNode)
+        self.playerTwoScoreNode = NodesCreator.createScoreLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width * 0.75, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerTwoScoreNode)
 
         //Restart node
-        self.restartGameNode = SKSpriteNode(imageNamed: "restartNode.png")
-        self.restartGameNode.size = CGSizeMake(restartNodeWidthHeight, restartNodeWidthHeight)
-        self.restartGameNode.position = CGPointMake(size.width / 2.0, size.height - restartNodeWidthHeight)
-        self.restartGameNode.hidden = true
+        self.restartGameNode = NodesCreator.createRestartGameNode("restartNode.png", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)
         self.addChild(self.restartGameNode)
         
         //start game info node
-        self.startGameInfoNode = SKLabelNode(fontNamed: "Helvetica")
-        self.startGameInfoNode.fontColor = SKColor.whiteColor()
-        self.startGameInfoNode.fontSize = scoreFontSize
-        self.startGameInfoNode.position = CGPointMake(size.width / 2.0, size.height / 2.0)
-        self.startGameInfoNode.text = "Tap to start!"
+        self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
         self.addChild(self.startGameInfoNode)
         
         //set scores to 0
@@ -202,24 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         //Create the ball
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let name = defaults.stringForKey("Ball")
-        {
-            self.ballNode = SKSpriteNode(imageNamed: "\(name).png")
-        }else{
-            self.ballNode = SKSpriteNode(imageNamed: "circleNode.png")
-        }
-        self.ballNode!.size = CGSizeMake(ballWidth, ballHeight)
-        self.ballNode!.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius)
-        self.ballNode!.physicsBody!.categoryBitMask = ballCategory
-        self.ballNode!.physicsBody!.contactTestBitMask = cornerCategory | paddleCategory
-        self.ballNode!.physicsBody!.linearDamping = 0.0
-        self.ballNode!.physicsBody!.angularDamping = 0.0
-        self.ballNode!.physicsBody!.restitution = 1.0
-        self.ballNode!.physicsBody!.dynamic = true
-        self.ballNode!.physicsBody!.friction = 0.0
-        self.ballNode!.physicsBody!.allowsRotation = false
-        self.ballNode!.position = CGPointMake(self.size.width / 2.0, self.size.height / 2.0)
+        self.ballNode = NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0)
         self.addChild(self.ballNode!)
         
         var startingVelocityX: CGFloat = kStartingVelocityX
@@ -237,7 +182,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func restartTheGame() {
-        
         //Remove the ball
         self.ballNode!.removeFromParent()
         //Stop Timer
@@ -296,6 +240,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var velocityX: CGFloat = self.ballNode!.physicsBody!.velocity.dx * kVelocityMultFactor
         var velocityY: CGFloat = self.ballNode!.physicsBody!.velocity.dy * kVelocityMultFactor
         self.ballNode!.physicsBody!.velocity = CGVectorMake(velocityX, velocityY)
+        
+        powerUpShouldAppear++
+        if powerUpShouldAppear >= powerUpTime
+        {
+            powerUpShouldAppear = 0
+            powerUp = PowerUpController().getRandomPowerUp(self.size)
+            self.addChild(powerUp!)
+        }
+        
+        if flaming
+        {
+            flamingTimer++
+            if flamingTimer >= flamingLimit{
+                flamingTimer = 0
+                flames?.removeFromParent()
+                println("apaguei")
+                let velocity = self.ballNode!.physicsBody!.velocity
+                self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx / 2  , velocity.dy / 2)
+                flaming = false
+
+            }
+            
+        }
+        
+        
+        
+        
     }
     
     //Move the first paddle with data from previous and new touch positions
@@ -368,16 +339,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         //Check if we have a ball with a corner contact
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == cornerCategory {
+            //on point remove power ups on field and put down flames
+            
+            
+            
             //ball touched left side
             if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
                 self.pointForPlayer(2)
                 self.runAction(self.failSoundAction)
+                flaming = false
+                powerUp?.removeFromParent()
             }
             else {
                 //ball touched the right side
                 if firstBody.node!.position.x >= (self.size.width - firstBody.node!.frame.size.width) {
                     self.pointForPlayer(1)
                     self.runAction(self.failSoundAction)
+                    flaming = false
+                    powerUp?.removeFromParent()
                 }
                 else {
                     self.runAction(self.bounceSoundAction)
@@ -412,6 +391,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 //                }
 //            }
         }
+        if flaming
+        {
+            self.flames?.emissionAngle = CGFloat(M_PI ) + atan2(self.ballNode!.physicsBody!.velocity.dy,self.ballNode!.physicsBody!.velocity.dx)
+            self.flames?.speed = self.ballNode!.speed
+            
+        }
+        
+        
+        
+        
     }
     
     
@@ -422,6 +411,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             for touch in touches as! Set<UITouch> {
                 //Set touch to move paddles
                 var location: CGPoint = touch.locationInNode(self)
+                
+                
+                //Check if a powerUp is being clicked
+                let node = self.nodeAtPoint(location)
+                if node.name == "flamingBall"
+                {
+                    let velocity = self.ballNode!.physicsBody!.velocity
+                    self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
+                    self.powerUp?.removeFromParent()
+                    self.flames = SKEmitterNode(fileNamed: "exampleFire")
+                    self.ballNode?.addChild(self.flames!)
+                    self.flames?.targetNode = self
+                    flaming = true
+                    println("pegando fogo")
+                    
+                }
+
+                
+                
+                
                 //Check if it is at the restart node
                 if CGRectContainsPoint(self.restartGameNode.frame, location) {
                     self.restartTheGame()
