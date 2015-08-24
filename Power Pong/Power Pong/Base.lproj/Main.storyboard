@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -78,11 +78,11 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AtS-Qb-3AE" customClass="GameBalls" customModule="Power_Pong" customModuleProvider="target">
-                                        <rect key="frame" x="108" y="0.0" width="65" height="201"/>
+                                        <rect key="frame" x="108" y="0.0" width="65" height="237"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="65" id="EyP-j4-qmO"/>
-                                            <constraint firstAttribute="height" constant="201" id="YO4-NN-BdL"/>
+                                            <constraint firstAttribute="height" constant="237" id="YO4-NN-BdL"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -94,7 +94,7 @@
                                     <constraint firstItem="AtS-Qb-3AE" firstAttribute="top" secondItem="oG5-67-f5U" secondAttribute="top" id="IfE-tJ-ukO"/>
                                     <constraint firstItem="AtS-Qb-3AE" firstAttribute="leading" secondItem="oG5-67-f5U" secondAttribute="leading" constant="108" id="MMr-ER-miA"/>
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="leading" secondItem="oG5-67-f5U" secondAttribute="leading" constant="8" id="Mdv-IT-zBg"/>
-                                    <constraint firstAttribute="bottom" secondItem="AtS-Qb-3AE" secondAttribute="bottom" constant="44" id="Uqq-vU-pKP"/>
+                                    <constraint firstAttribute="bottom" secondItem="AtS-Qb-3AE" secondAttribute="bottom" constant="8" id="Uqq-vU-pKP"/>
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="leading" secondItem="oG5-67-f5U" secondAttribute="leadingMargin" id="YLO-og-Xp0"/>
                                     <constraint firstItem="AtS-Qb-3AE" firstAttribute="leading" secondItem="cPv-gh-SS0" secondAttribute="trailing" constant="8" id="gO6-gm-XGn"/>
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="top" secondItem="oG5-67-f5U" secondAttribute="top" constant="8" id="hLs-07-feK"/>
@@ -104,7 +104,7 @@
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="top" secondItem="oG5-67-f5U" secondAttribute="top" constant="8" id="mrK-sh-vaZ"/>
                                     <constraint firstItem="AtS-Qb-3AE" firstAttribute="leading" secondItem="cPv-gh-SS0" secondAttribute="trailing" constant="8" symbolic="YES" id="pNe-Kg-fyD"/>
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="leading" secondItem="oG5-67-f5U" secondAttribute="leading" constant="8" id="uNk-ZP-GK8"/>
-                                    <constraint firstAttribute="bottom" secondItem="AtS-Qb-3AE" secondAttribute="bottom" constant="44" id="vHi-Dr-NXu"/>
+                                    <constraint firstAttribute="bottom" secondItem="AtS-Qb-3AE" secondAttribute="bottom" constant="8" id="vHi-Dr-NXu"/>
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="top" secondItem="oG5-67-f5U" secondAttribute="top" constant="8" id="wcp-zl-wHY"/>
                                     <constraint firstItem="AtS-Qb-3AE" firstAttribute="leading" secondItem="oG5-67-f5U" secondAttribute="leading" constant="108" id="wo0-qp-1qY"/>
                                     <constraint firstItem="cPv-gh-SS0" firstAttribute="top" secondItem="oG5-67-f5U" secondAttribute="topMargin" id="yJH-AO-UoB"/>

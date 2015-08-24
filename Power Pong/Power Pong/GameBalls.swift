@@ -49,7 +49,13 @@ import UIKit
         }
         
         //dropDownMenu.menuText = ""
-        dropDownMenu.menuIconImage = UIImage(named: "ball_default.png")
+        //dropDownMenu.menuIconImage = UIImage(named: "ball_default.png")
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let name = defaults.stringForKey("Ball"){
+            dropDownMenu.menuIconImage = UIImage(named: "\(name).png")
+        }else{
+            dropDownMenu.menuIconImage = UIImage(named: "ball_default.png")
+        }
         dropDownMenu.dropDownItems = dropdownItems as [AnyObject]
         dropDownMenu.paddingLeft = 10
         dropDownMenu.frame = CGRectMake((self.frame.size.width/2) - 150, 0, 50, 40)
