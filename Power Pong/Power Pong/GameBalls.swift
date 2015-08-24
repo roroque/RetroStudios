@@ -14,11 +14,13 @@ import UIKit
     var dataImage:NSArray = ["ball_default.png",
         "Soccer.png",
         "Basketball.png",
-        "8.png"]
+        "8.png",
+        "dilma.png"]
     var dataTitle:NSArray = ["ball_default",
         "Soccer",
         "Basketball",
-        "8"]
+        "8",
+        "dilma"]
     
     var item:DropDownItem!
     let defaults = NSUserDefaults.standardUserDefaults()
