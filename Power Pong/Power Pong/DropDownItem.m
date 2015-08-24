@@ -82,7 +82,7 @@
 {
     _iconImage = iconImage;
     [self.iconImageView setImage:self.iconImage];
-    
+    self.iconImageView.contentMode = UIViewContentModeScaleToFill;
     [self updateLayout];
 }
 

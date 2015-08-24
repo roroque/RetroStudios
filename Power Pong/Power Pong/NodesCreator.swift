@@ -63,6 +63,21 @@ class NodesCreator: NSObject {
         return ballNode
     }
     
+    static func createBackgroud(size: CGSize) -> SKSpriteNode {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        var background : SKSpriteNode
+        if let name = defaults.stringForKey("Back"){
+            background = SKSpriteNode(imageNamed: "\(name)")
+        }else{
+            background = SKSpriteNode(imageNamed: "Background")
+        }
+        
+        background.position = CGPointMake(size.width/2, size.height/2)
+        background.size = size
+        
+        return background
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init()

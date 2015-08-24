@@ -73,9 +73,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         //Setup the scene
         self.backgroundColor = SKColor.brownColor()
-        var background = SKSpriteNode(imageNamed: "brFlag")
-        background.position = CGPointMake(self.size.width/2, self.size.height/2)
-        background.size = self.size
+        var background = NodesCreator.createBackgroud(self.size)
+//        background.position = CGPointMake(self.size.width/2, self.size.height/2)
+//        background.size = self.size
         self.addChild(background)
         
         self.physicsWorld.contactDelegate = self
