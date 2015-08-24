@@ -72,7 +72,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         super.init(size: size)
         
         //Setup the scene
-        self.backgroundColor = SKColor.blackColor()
+        self.backgroundColor = SKColor.brownColor()
+        var background = SKSpriteNode(imageNamed: "brFlag")
+        background.position = CGPointMake(self.size.width/2, self.size.height/2)
+        background.size = self.size
+        self.addChild(background)
         
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0)
@@ -103,19 +107,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         //Middle line 
-        var numberOfLines = Int(size.height / (2 * middleLineHeight))
-        var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
-        for var i = 0; i < numberOfLines; i++ {
-            var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 0.5), size: CGSizeMake(middleLineWidth, middleLineHeight))
-            lineNode.position = linePosition
-            linePosition.y += 2 * middleLineHeight
-            self.addChild(lineNode)
-        }
+//        var numberOfLines = Int(size.height / (2 * middleLineHeight))
+//        var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
+//        for var i = 0; i < numberOfLines; i++ {
+//            var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 0.5), size: CGSizeMake(middleLineWidth, middleLineHeight))
+//            lineNode.position = linePosition
+//            linePosition.y += 2 * middleLineHeight
+//            self.addChild(lineNode)
+//        }
         
         //Paddles
-        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.greenColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
+        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.whiteColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
         self.addChild(self.playerOnePaddleNode)
-        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.yellowColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
+        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.whiteColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
         self.addChild(self.playerTwoPaddleNode)
         
         //Score Labels
@@ -186,7 +190,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.ballNode!.removeFromParent()
         //Stop Timer
         self.speedupTimer!.invalidate()
-        self.speedupTimer = nil
+        //self.speedupTimer = nil
         
         self.isPlayingGame = false
         self.startGameInfoNode.hidden = false
@@ -214,7 +218,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.startGameInfoNode.hidden = false
             self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
-            self.speedupTimer = nil
+            //self.speedupTimer = nil
         case 2:
             self.playerTwoScore++
             self.ballNode!.removeFromParent()
@@ -222,7 +226,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.startGameInfoNode.hidden = false
             self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
-            self.speedupTimer = nil
+            //self.speedupTimer = nil
         default:
             println()
         }
@@ -232,7 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func willMoveFromView(view: SKView) {
         //reset timer
         self.speedupTimer!.invalidate()
-        self.speedupTimer = nil
+        //self.speedupTimer = nil
     }
     
     //Method called by the timer
