@@ -23,7 +23,7 @@ var powerUpShouldAppear = 0 //powerUp counter till some powerUp should appear
 let powerUpTime = 10//time till powerUp appears
 
 //categories for detecting contacts between nodes
-let  ballCategory : UInt32 = 0x1 << 0
+let ballCategory : UInt32 = 0x1 << 0
 let cornerCategory : UInt32 = 0x1 << 1
 let paddleCategory : UInt32  = 0x1 << 2
 
@@ -67,6 +67,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var failSoundAction : SKAction?
     
     var gameBalls: GameBalls?
+    
+    var firstRound: Bool = true
+    var paddleWithBall: Int = 1
+    var winner: Int = 0
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -130,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
         //Restart node
         self.restartGameNode = NodesCreator.createRestartGameNode("restartNode.png", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)
-        self.addChild(self.restartGameNode)
+        //self.addChild(self.restartGameNode)
         
         //start game info node
         self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
@@ -168,8 +172,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         //Create the ball
-        self.ballNode = NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0)
-        self.addChild(self.ballNode!)
+        if firstRound {
+            self.ballNode = NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0)
+        }
+        
+        if winner == 1{
+            positionPlayerOnePaddleNode()
+            self.ballNode!.removeFromParent()
+            self.addChild(self.ballNode!)
+        }else{
+            positionPlayerTwoPaddleNode()
+            self.ballNode!.removeFromParent()
+            self.addChild(self.ballNode!)
+        }
         
         var startingVelocityX: CGFloat = kStartingVelocityX
         var startingVelocityY: CGFloat = kStartingVelocityY
@@ -177,12 +192,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             startingVelocityX *= kIpadMultFactor
             startingVelocityY *= kIpadMultFactor
         }
-        if self.playerOneScore > self.playerTwoScore {
+        if self.paddleWithBall == 2 {
             startingVelocityX = -startingVelocityX
         }
+        
         //Start ball and timer to speedup the ball
         self.ballNode!.physicsBody!.velocity = CGVectorMake(startingVelocityX, startingVelocityY)
         self.speedupTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(kSpeedupInterval), target: self, selector: Selector("speedUpTheBall"), userInfo: nil, repeats: true)
+        
+        firstRound = false
     }
     
     func restartTheGame() {
@@ -193,7 +211,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //self.speedupTimer = nil
         
         self.isPlayingGame = false
-        self.startGameInfoNode.hidden = false
+        //self.startGameInfoNode.hidden = false
         self.restartGameNode.hidden = true
         //Reset the scores
         self.playerOneScore = 0
@@ -213,24 +231,71 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         switch player {
         case 1:
             self.playerOneScore++
-            self.ballNode!.removeFromParent()
+            self.paddleWithBall = 2
+            self.ballNode!.physicsBody!.velocity = CGVector.zeroVector
             self.isPlayingGame = false
-            self.startGameInfoNode.hidden = false
+            //self.startGameInfoNode.hidden = false
             self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
+            
+            positionPlayerOnePaddleNode()
+            self.ballNode!.removeFromParent()
+            self.playerTwoPaddleNode.addChild(self.ballNode!)
+            self.winner = 1
+            animateScore(winner)
+            println("ponto1")
+    
             //self.speedupTimer = nil
         case 2:
             self.playerTwoScore++
-            self.ballNode!.removeFromParent()
+            self.paddleWithBall = 1
+            self.ballNode!.physicsBody!.velocity = CGVector.zeroVector
             self.isPlayingGame = false
-            self.startGameInfoNode.hidden = false
+            //self.startGameInfoNode.hidden = false
             self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
+            
+            positionPlayerTwoPaddleNode()
+            self.ballNode!.removeFromParent()
+            self.playerOnePaddleNode.addChild(self.ballNode!)
+            self.winner = 2
+            animateScore(winner)
+             println("ponto2")
+
             //self.speedupTimer = nil
         default:
             println()
         }
         self.updateScoreLabels()
+    }
+    
+    func positionPlayerOnePaddleNode(){
+        let tempPhysicsBody = self.ballNode!.physicsBody
+        self.ballNode!.physicsBody = nil
+        self.ballNode!.position = CGPointMake(self.playerTwoPaddleNode.position.x - 45, self.playerTwoPaddleNode.position.y)
+        self.ballNode!.physicsBody = tempPhysicsBody
+
+    }
+    
+    func positionPlayerTwoPaddleNode(){
+        let tempPhysicsBody = self.ballNode!.physicsBody
+        self.ballNode!.physicsBody = nil
+        self.ballNode!.position = CGPointMake(self.playerOnePaddleNode.position.x + 45, self.playerOnePaddleNode.position.y)
+        self.ballNode!.physicsBody = tempPhysicsBody
+
+    }
+    
+    func animateScore(point: Int)
+    {
+        let growAction = SKAction.scaleBy(1.2, duration: 0.4)
+        let shrinkAction = SKAction.scaleBy(0.8333, duration: 0.4)
+        let growAndShrink = SKAction.sequence([growAction, shrinkAction])
+        
+        if point == 1{
+            playerOneScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 2))
+        }else{
+            playerTwoScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 2))
+        }
     }
     
     override func willMoveFromView(view: SKView) {
@@ -454,8 +519,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             return
         }
         else {
-            //Start Playing
-            self.startPlayingTheGame()
+            for touch in touches as! Set<UITouch> {
+                var location: CGPoint = touch.locationInNode(self)
+                let node = self.nodeAtPoint(location)
+                if node != self.playerOnePaddleNode && node != self.playerTwoPaddleNode {
+                    //Start Playing
+                    self.startPlayingTheGame()
+                }
+                
+                if self.playerOnePaddleControlTouch == nil {
+                    if location.x < self.size.width / 2.0 {
+                        self.playerOnePaddleControlTouch = touch
+                    }
+                }
+                if self.playerTwoPaddleControlTouch == nil {
+                    if location.x > self.size.width / 2.0 {
+                        self.playerTwoPaddleControlTouch = touch
+                    }
+                }
+            }
             return
         }
     }
