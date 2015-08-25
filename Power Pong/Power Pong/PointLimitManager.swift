@@ -30,6 +30,7 @@ class PointLimitManager : UIViewController {
         }else{
             defaults.setInteger(5, forKey: "PointLimit")
             pointLimitStepper.value = 5
+            pointLimitLabel.text = "Point limit: 5"
         }
         
     }

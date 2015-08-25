@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -58,8 +58,9 @@
                                         <exclude reference="yDG-4Y-fgY"/>
                                     </mask>
                                 </variation>
-                                <variation key="heightClass=compact">
+                                <variation key="heightClass=compact" misplaced="YES">
                                     <fontDescription key="fontDescription" name="STHeitiSC-Medium" family="Heiti SC" pointSize="20"/>
+                                    <rect key="frame" x="260" y="215" width="83" height="30"/>
                                     <mask key="constraints">
                                         <exclude reference="9oz-to-fHF"/>
                                         <include reference="UQO-Pp-Zkl"/>
@@ -250,13 +251,13 @@
                             <mask key="constraints">
                                 <exclude reference="F0Y-2V-Lhm"/>
                                 <exclude reference="cYm-ha-wGw"/>
-                                <exclude reference="6uo-uc-IA9"/>
-                                <exclude reference="N5R-cf-VhM"/>
                                 <exclude reference="4yT-5W-DgN"/>
                                 <exclude reference="NgC-CS-UKu"/>
                                 <exclude reference="KQx-O4-4kG"/>
                                 <exclude reference="3UI-Mz-k8r"/>
                                 <exclude reference="8Jw-V9-xrG"/>
+                                <exclude reference="6uo-uc-IA9"/>
+                                <exclude reference="N5R-cf-VhM"/>
                                 <exclude reference="GON-6s-06F"/>
                                 <exclude reference="ZsW-52-0vf"/>
                                 <exclude reference="tb3-85-dhZ"/>
