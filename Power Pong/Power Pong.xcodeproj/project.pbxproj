@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		08882D551B8B8D3500278A5F /* DismissSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08882D531B8B8BCA00278A5F /* DismissSegue.swift */; };
 		08882D571B8B8F0000278A5F /* GameBacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08882D561B8B8F0000278A5F /* GameBacks.swift */; };
+		08D28A3B1B8CCD8C00017E0B /* hemi head bd it.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A3A1B8CCD6800017E0B /* hemi head bd it.ttf */; };
 		1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */; };
 		1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */; };
 		1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		08882D531B8B8BCA00278A5F /* DismissSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissSegue.swift; sourceTree = "<group>"; };
 		08882D561B8B8F0000278A5F /* GameBacks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBacks.swift; sourceTree = "<group>"; };
+		08D28A3A1B8CCD6800017E0B /* hemi head bd it.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "hemi head bd it.ttf"; sourceTree = "<group>"; };
 		1DDBD62D1B86AFD000319EB0 /* Power Pong-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Power Pong-Bridging-Header.h"; sourceTree = "<group>"; };
 		1DDBD62E1B86AFD100319EB0 /* DropDownItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownItem.h; sourceTree = "<group>"; };
 		1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownItem.m; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		1DDBD6371B86CB6200319EB0 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				08D28A3A1B8CCD6800017E0B /* hemi head bd it.ttf */,
 				1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */,
 			);
 			name = Fonts;
@@ -262,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08D28A3B1B8CCD8C00017E0B /* hemi head bd it.ttf in Resources */,
 				FA73F6021B82644200E35884 /* LaunchScreen.xib in Resources */,
 				FA73F5FF1B82644200E35884 /* Images.xcassets in Resources */,
 				FA00BB5F1B87912E002DF216 /* exampleFire.sks in Resources */,
