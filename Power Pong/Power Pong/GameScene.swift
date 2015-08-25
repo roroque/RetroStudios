@@ -21,6 +21,7 @@ let kRestartGameWidthHeight: CGFloat = 50.0 //width and height of restart node
 let kPaddleMoveMult: CGFloat = 1.5 //multiply factor when moving fingers to move the paddles, by moving finger for N pt it will move it for N * kPaddleMoveMult
 var powerUpShouldAppear = 0 //powerUp counter till some powerUp should appear
 let powerUpTime = 10//time till powerUp appears
+let highScore = 3//maximum punctuation of the game
 
 //categories for detecting contacts between nodes
 let ballCategory : UInt32 = 0x1 << 0
@@ -55,6 +56,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var restartGameNode : SKSpriteNode!
     //start game info node
     var startGameInfoNode : SKLabelNode!
+    //winner info node
+    var winnerInfoNode : SKLabelNode!
     //touches
     var playerOnePaddleControlTouch : UITouch?
     var playerTwoPaddleControlTouch : UITouch?
@@ -141,6 +144,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
         self.addChild(self.startGameInfoNode)
         
+        //winner info node
+        self.winnerInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 4.0, text: "")
+        self.addChild(self.winnerInfoNode)
+        
         //set scores to 0
         self.playerOneScore = 0
         self.playerTwoScore = 0
@@ -160,6 +167,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.isPlayingGame = true
         self.startGameInfoNode.hidden = true
+        self.winnerInfoNode.hidden = true
         self.restartGameNode.hidden = false
         
         var ballWidth: CGFloat = kBallRadius * 2.0
@@ -212,7 +220,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //self.speedupTimer = nil
         
         self.isPlayingGame = false
-        //self.startGameInfoNode.hidden = false
+        self.winnerInfoNode.hidden = false
+        self.startGameInfoNode.hidden = false
         self.restartGameNode.hidden = true
         //Reset the scores
         self.playerOneScore = 0
@@ -225,6 +234,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func updateScoreLabels() {
         self.playerOneScoreNode.text = "\(self.playerOneScore)"
         self.playerTwoScoreNode.text = "\(self.playerTwoScore)"
+    }
+    
+    func endOfTheGame(){
+        if self.playerOneScore == highScore{
+            self.playerOneScoreNode.removeAllActions()
+            self.winnerInfoNode.text = "Player 1 wins!"
+            
+            self.restartTheGame()
+        }else if self.playerTwoScore == highScore{
+            self.playerTwoScoreNode.removeAllActions()
+            self.winnerInfoNode.text = "Player 2 wins!"
+            self.restartTheGame()
+        }
     }
     
     func pointForPlayer(player: Int){
@@ -268,6 +290,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             println()
         }
         self.updateScoreLabels()
+        self.endOfTheGame()
     }
     
     func positionPlayerOnePaddleNode(){
@@ -293,12 +316,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let growAndShrink = SKAction.sequence([growAction, shrinkAction])
         
         if point == 1{
-            playerOneScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 2))
+            self.playerOneScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
         }else{
-            playerTwoScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 2))
+            self.playerTwoScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
         }
     }
-    
+
     override func willMoveFromView(view: SKView) {
         //reset timer
         self.speedupTimer!.invalidate()
