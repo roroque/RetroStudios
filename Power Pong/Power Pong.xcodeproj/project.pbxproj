@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08882D551B8B8D3500278A5F /* DismissSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08882D531B8B8BCA00278A5F /* DismissSegue.swift */; };
+		08882D571B8B8F0000278A5F /* GameBacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08882D561B8B8F0000278A5F /* GameBacks.swift */; };
 		1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */; };
 		1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */; };
 		1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08882D531B8B8BCA00278A5F /* DismissSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissSegue.swift; sourceTree = "<group>"; };
+		08882D561B8B8F0000278A5F /* GameBacks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBacks.swift; sourceTree = "<group>"; };
 		1DDBD62D1B86AFD000319EB0 /* Power Pong-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Power Pong-Bridging-Header.h"; sourceTree = "<group>"; };
 		1DDBD62E1B86AFD100319EB0 /* DropDownItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownItem.h; sourceTree = "<group>"; };
 		1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownItem.m; sourceTree = "<group>"; };
@@ -81,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08C922D91B8B985B00720F8A /* Creators */ = {
+			isa = PBXGroup;
+			children = (
+				FA00BD251B87B12700871C7C /* PaddleCreator.swift */,
+				FA00BD271B87B13600871C7C /* NodesCreator.swift */,
+			);
+			name = Creators;
+			sourceTree = "<group>";
+		};
 		1DDBD6341B86AFDE00319EB0 /* DropDownMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,12 +135,13 @@
 			isa = PBXGroup;
 			children = (
 				1DDBD6341B86AFDE00319EB0 /* DropDownMenu */,
+				08C922D91B8B985B00720F8A /* Creators */,
 				FA73F5F31B82644200E35884 /* AppDelegate.swift */,
-				FA00BD251B87B12700871C7C /* PaddleCreator.swift */,
 				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
+				08882D561B8B8F0000278A5F /* GameBacks.swift */,
 				FA73F5F51B82644200E35884 /* GameScene.sks */,
+				08882D531B8B8BCA00278A5F /* DismissSegue.swift */,
 				FA73F5F71B82644200E35884 /* GameScene.swift */,
-				FA00BD271B87B13600871C7C /* NodesCreator.swift */,
 				FA00BB631B879430002DF216 /* PowerUpController.swift */,
 				FA73F5F91B82644200E35884 /* GameViewController.swift */,
 				FA73F5FB1B82644200E35884 /* Main.storyboard */,
@@ -274,12 +288,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA00BD261B87B12700871C7C /* PaddleCreator.swift in Sources */,
+				08882D551B8B8D3500278A5F /* DismissSegue.swift in Sources */,
 				1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */,
 				FA00BD281B87B13600871C7C /* NodesCreator.swift in Sources */,
 				FA73F5F81B82644200E35884 /* GameScene.swift in Sources */,
 				FA00BB641B879430002DF216 /* PowerUpController.swift in Sources */,
 				1DDBD63D1B86E09000319EB0 /* GameBalls.swift in Sources */,
 				FA73F5FA1B82644200E35884 /* GameViewController.swift in Sources */,
+				08882D571B8B8F0000278A5F /* GameBacks.swift in Sources */,
 				1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */,
 				FA73F5F41B82644200E35884 /* AppDelegate.swift in Sources */,
 			);

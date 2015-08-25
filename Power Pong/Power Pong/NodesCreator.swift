@@ -52,6 +52,7 @@ class NodesCreator: NSObject {
         ballNode.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius)
         ballNode.physicsBody!.categoryBitMask = category
         ballNode.physicsBody!.contactTestBitMask = contact
+        ballNode.physicsBody!.collisionBitMask = cornerCategory | paddleCategory;
         ballNode.physicsBody!.linearDamping = 0.0
         ballNode.physicsBody!.angularDamping = 0.0
         ballNode.physicsBody!.restitution = 1.0
@@ -61,6 +62,21 @@ class NodesCreator: NSObject {
         ballNode.position = CGPointMake(xPos, yPos)
         
         return ballNode
+    }
+    
+    static func createBackgroud(size: CGSize) -> SKSpriteNode {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        var background : SKSpriteNode
+        if let name = defaults.stringForKey("Back"){
+            background = SKSpriteNode(imageNamed: "\(name)")
+        }else{
+            background = SKSpriteNode(imageNamed: "Background")
+        }
+        
+        background.position = CGPointMake(size.width/2, size.height/2)
+        background.size = size
+        
+        return background
     }
     
     
