@@ -26,6 +26,7 @@ let powerUpTime = 10//time till powerUp appears
 let  ballCategory : UInt32 = 0x1 << 0
 let cornerCategory : UInt32 = 0x1 << 1
 let paddleCategory : UInt32  = 0x1 << 2
+let powerUpCategory : UInt32 = 0x1 << 3
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
@@ -248,9 +249,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         powerUpShouldAppear++
         if powerUpShouldAppear >= powerUpTime
         {
+            if self.powerUp != nil
+            {
+                self.powerUp?.removeFromParent()
+            }
             powerUpShouldAppear = 0
-            powerUp = PowerUpController().getRandomPowerUp(self.size)
+            self.powerUp = PowerUpController().getRandomPowerUp(self.size)
+            
             self.addChild(powerUp!)
+
+          
+
+           // self.powerUp!.physicsBody!.collisionBitMask = 0
+         //   println(self.powerUp!.physicsBody!.collisionBitMask)
+          //  println(self.ballNode!.physicsBody!.collisionBitMask)
+            
+          //  self.powerUp!.physicsBody!.collisionBitMask =
+            
+            self.powerUp!.physicsBody!.categoryBitMask = powerUpCategory
+            self.powerUp!.physicsBody!.collisionBitMask = 0
+            self.powerUp?.physicsBody!.contactTestBitMask = ballCategory
+
         }
         
         if flaming
@@ -341,10 +360,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
+      
+        
+        if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == powerUpCategory
+        {
+            
+            if powerUp!.name == "flamingBall"
+            {
+                let velocity = self.ballNode!.physicsBody!.velocity
+                self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
+                self.powerUp?.removeFromParent()
+                self.flames = SKEmitterNode(fileNamed: "exampleFire")
+                self.ballNode?.addChild(self.flames!)
+                self.flames?.targetNode = self
+                flaming = true
+                println("pegando fogo")
+                
+            }
+            return
+
+            
+        }
+        
+        
+        
         //Check if we have a ball with a corner contact
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == cornerCategory {
-            //on point remove power ups on field and put down flames
-            
             
             
             //ball touched left side

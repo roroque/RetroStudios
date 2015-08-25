@@ -28,6 +28,7 @@ class PowerUpController: NSObject {
         let node =  SKSpriteNode(imageNamed: randomPower)
         node.name = randomPower
         node.size = CGSizeMake(45, 45)
+        node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
         node.position = getRandomPosition(randomPower, withScreenSize: screenSize)
         
         return node
