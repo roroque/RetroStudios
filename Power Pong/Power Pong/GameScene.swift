@@ -73,6 +73,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     //sounds
     var bounceSoundAction : SKAction?
     var failSoundAction : SKAction?
+    var endGameSoundAction : SKAction?
+    var fireballSoundAction : SKAction?
     
     var firstRound: Bool = true
     var paddleWithBall: Int = 1
@@ -175,8 +177,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.updateScoreLabels()
         
         //sound actions
-        //self.bounceSoundAction = [SKAction playSoundFileNamed:@"app_game_interactive_alert_tone_026.mp3" waitForCompletion:NO];
-        //self.failSoundAction = [SKAction playSoundFileNamed:@"synth_stab.mp3" waitForCompletion:NO];
+        self.bounceSoundAction = SKAction.playSoundFileNamed("Woosh.mp3", waitForCompletion: false)
+        self.failSoundAction = SKAction.playSoundFileNamed("Explosion.mp3", waitForCompletion: false)
+        self.endGameSoundAction = SKAction.playSoundFileNamed("Ovation.mp3", waitForCompletion: false)
+        self.fireballSoundAction = SKAction.playSoundFileNamed("Fireball.mp3", waitForCompletion: false)
+
         
     }
 
@@ -272,10 +277,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         //Check if the game is over
         if (self.playerOneScore == highScore)&&(highScore != 0) {
+            self.runAction(self.endGameSoundAction)
             self.playerOneScoreNode.removeAllActions()
             self.winnerInfoNode.text = "Player 1 wins!"
             self.restartTheGame()
         }else if (self.playerTwoScore == highScore)&&(highScore != 0) {
+            self.runAction(self.endGameSoundAction)
             self.playerTwoScoreNode.removeAllActions()
             self.winnerInfoNode.text = "Player 2 wins!"
             self.restartTheGame()
@@ -547,6 +554,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //check if the powerUp is the flamingBall
             if powerUp!.name == "flamingBall"
             {
+                self.runAction(self.fireballSoundAction)
+
                 let velocity = self.ballNode.first!.physicsBody!.velocity
 
                 for i in self.ballNode

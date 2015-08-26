@@ -11,6 +11,10 @@
 		08882D571B8B8F0000278A5F /* GameBacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08882D561B8B8F0000278A5F /* GameBacks.swift */; };
 		08D28A3B1B8CCD8C00017E0B /* hemi head bd it.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A3A1B8CCD6800017E0B /* hemi head bd it.ttf */; };
 		08D28A3D1B8CDDB600017E0B /* PointLimitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */; };
+		08D28A481B8E46FA00017E0B /* Explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A471B8E46FA00017E0B /* Explosion.mp3 */; };
+		08D28A4A1B8E470300017E0B /* Woosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A491B8E470300017E0B /* Woosh.mp3 */; };
+		08D28A4C1B8E470B00017E0B /* Fireball.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A4B1B8E470B00017E0B /* Fireball.mp3 */; };
+		08D28A4E1B8E471700017E0B /* Ovation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A4D1B8E471700017E0B /* Ovation.mp3 */; };
 		1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */; };
 		1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */; };
 		1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */; };
@@ -45,6 +49,10 @@
 		08882D561B8B8F0000278A5F /* GameBacks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBacks.swift; sourceTree = "<group>"; };
 		08D28A3A1B8CCD6800017E0B /* hemi head bd it.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "hemi head bd it.ttf"; sourceTree = "<group>"; };
 		08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointLimitManager.swift; sourceTree = "<group>"; };
+		08D28A471B8E46FA00017E0B /* Explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Explosion.mp3; sourceTree = "<group>"; };
+		08D28A491B8E470300017E0B /* Woosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Woosh.mp3; sourceTree = "<group>"; };
+		08D28A4B1B8E470B00017E0B /* Fireball.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Fireball.mp3; sourceTree = "<group>"; };
+		08D28A4D1B8E471700017E0B /* Ovation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ovation.mp3; sourceTree = "<group>"; };
 		1DDBD62D1B86AFD000319EB0 /* Power Pong-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Power Pong-Bridging-Header.h"; sourceTree = "<group>"; };
 		1DDBD62E1B86AFD100319EB0 /* DropDownItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownItem.h; sourceTree = "<group>"; };
 		1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownItem.m; sourceTree = "<group>"; };
@@ -98,6 +106,17 @@
 			name = Creators;
 			sourceTree = "<group>";
 		};
+		08D28A4F1B8E471D00017E0B /* Audios */ = {
+			isa = PBXGroup;
+			children = (
+				08D28A471B8E46FA00017E0B /* Explosion.mp3 */,
+				08D28A491B8E470300017E0B /* Woosh.mp3 */,
+				08D28A4D1B8E471700017E0B /* Ovation.mp3 */,
+				08D28A4B1B8E470B00017E0B /* Fireball.mp3 */,
+			);
+			name = Audios;
+			sourceTree = "<group>";
+		};
 		1DDBD6341B86AFDE00319EB0 /* DropDownMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +160,7 @@
 			children = (
 				1DDBD6341B86AFDE00319EB0 /* DropDownMenu */,
 				08C922D91B8B985B00720F8A /* Creators */,
+				08D28A4F1B8E471D00017E0B /* Audios */,
 				FA73F5F31B82644200E35884 /* AppDelegate.swift */,
 				08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */,
 				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
@@ -274,9 +294,13 @@
 				FA73F5FF1B82644200E35884 /* Images.xcassets in Resources */,
 				FA00BB5F1B87912E002DF216 /* exampleFire.sks in Resources */,
 				FA00BB601B87912E002DF216 /* spark.png in Resources */,
+				08D28A4E1B8E471700017E0B /* Ovation.mp3 in Resources */,
+				08D28A4A1B8E470300017E0B /* Woosh.mp3 in Resources */,
 				FA73F5F61B82644200E35884 /* GameScene.sks in Resources */,
 				FA73F5FD1B82644200E35884 /* Main.storyboard in Resources */,
 				1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */,
+				08D28A481B8E46FA00017E0B /* Explosion.mp3 in Resources */,
+				08D28A4C1B8E470B00017E0B /* Fireball.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
