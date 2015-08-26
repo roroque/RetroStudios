@@ -280,27 +280,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.winnerInfoNode.text = "Player 2 wins!"
             self.restartTheGame()
         }
-        changeColorForLabelNode(self.winnerInfoNode, toColor: SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0), withDuration: 5.0)
-    }
-    
-    func changeColorForLabelNode(labelNode: SKLabelNode, toColor: SKColor, withDuration: NSTimeInterval) {
-        labelNode.runAction(SKAction.customActionWithDuration(withDuration, actionBlock: {
+        //animation for winner label
+        //animateScore(3)
+        animateLabel()
+        self.winnerInfoNode.color = SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0)
+        self.winnerInfoNode.colorBlendFactor = 0.0
+        
+        let duration:NSTimeInterval = 4.0
+        self.winnerInfoNode.runAction(SKAction.customActionWithDuration(duration, actionBlock: {
             node, elapsedTime in
             
             let label = node as! SKLabelNode
-            
-            let toColorComponents = CGColorGetComponents(toColor.CGColor)
-            let fromColorComponents = CGColorGetComponents(label.fontColor.CGColor)
-            
-            let finalRed = fromColorComponents[0] + (toColorComponents[0] - fromColorComponents[0])*CGFloat(elapsedTime / CGFloat(withDuration))
-            let finalGreen = fromColorComponents[1] + (toColorComponents[1] - fromColorComponents[1])*CGFloat(elapsedTime / CGFloat(withDuration))
-            let finalBlue = fromColorComponents[2] + (toColorComponents[2] - fromColorComponents[2])*CGFloat(elapsedTime / CGFloat(withDuration))
-            let finalAlpha = fromColorComponents[3] + (toColorComponents[3] - fromColorComponents[3])*CGFloat(elapsedTime / CGFloat(withDuration))
-            
-            labelNode.fontColor = SKColor(red: finalRed, green: finalGreen, blue: finalBlue, alpha: finalAlpha)
+            label.colorBlendFactor = elapsedTime / CGFloat(duration);
         }))
     }
-    
     
     func goBackToMenu(){
         //Return to the menu
@@ -385,9 +378,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         if point == 1{
             self.playerOneScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
-        }else{
+        }else if point == 2{
             self.playerTwoScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
+        }else{
+            self.winnerInfoNode.runAction(SKAction.repeatAction(growAndShrink, count: 4))
         }
+    }
+    
+    
+    func animateLabel(){
+        let fadeOut = SKAction.fadeInWithDuration(0.09)
+        let fadeIn = SKAction.fadeOutWithDuration(0.2)
+        let sequence = SKAction.sequence([fadeIn,fadeOut])
+        
+        self.winnerInfoNode.runAction(SKAction.repeatAction(sequence, count: 20))
     }
 
     override func willMoveFromView(view: SKView) {
