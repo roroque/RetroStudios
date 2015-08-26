@@ -25,7 +25,12 @@ import SpriteKit
 //    }
 //}
 
-class GameViewController: UIViewController {
+protocol returnToMenu: class {
+    func returnToMenu()
+}
+
+
+class GameViewController: UIViewController, returnToMenu, SKSceneDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,6 +45,7 @@ class GameViewController: UIViewController {
         }
         var scene: SKScene = GameScene(size: sceneSize)
         scene.scaleMode = SKSceneScaleMode.AspectFill
+        scene.delegate = self
         skView.presentScene(scene)
     }
     
@@ -63,4 +69,9 @@ class GameViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    func returnToMenu() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
 }
