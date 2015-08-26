@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "power_up_icons.png"
+      "filename" : "flame.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "power_up_icons-1.png"
+      "filename" : "flame-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "power_up_icons-2.png"
+      "filename" : "flame-2.png"
     }
   ],
   "info" : {
