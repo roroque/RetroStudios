@@ -39,7 +39,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //flaming
     var flaming = false
-    var flames : SKEmitterNode?
+    var flames : [SKEmitterNode] = []
     var flamingTimer = 0
     var flamingLimit = 3
     
@@ -315,15 +315,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.paddleWithBall = 2
             ball.physicsBody!.velocity = CGVector.zeroVector
             ball.removeFromParent()
-            //check if there are no more balls in game
-            self.isPlayingGame = false
-            //self.startGameInfoNode.hidden = false
-            //self.restartGameNode.hidden = true
-            self.speedupTimer!.invalidate()
-            self.powerUpTimer!.invalidate()
-            
-            positionPlayerOnePaddleNode()
-            self.playerTwoPaddleNode.addChild(self.ballNode.first!)
+             //check if there are no more balls in game
+            if self.ballNode.count == 1{
+                self.isPlayingGame = false
+                //self.startGameInfoNode.hidden = false
+                //self.restartGameNode.hidden = true
+                self.speedupTimer!.invalidate()
+                self.powerUpTimer!.invalidate()
+                
+                positionPlayerOnePaddleNode()
+                self.playerTwoPaddleNode.addChild(self.ballNode.first!)
+                
+            }
+            else{
+                
+                self.ballNode = self.ballNode.filter{ $0 != ball }
+                
+            }
             self.winner = 1
             animateScore(winner)
             println("ponto1")
@@ -334,22 +342,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.paddleWithBall = 1
             ball.physicsBody!.velocity = CGVector.zeroVector
             ball.removeFromParent()
-            self.winner = 2
-            animateScore(winner)
+            
+
             //check if there are no more balls in game
             
+            if self.ballNode.count == 1{
+                self.isPlayingGame = false
+                //self.startGameInfoNode.hidden = false
+                //self.restartGameNode.hidden = true
+                self.speedupTimer!.invalidate()
+                self.powerUpTimer!.invalidate()
+                positionPlayerTwoPaddleNode()
+                self.playerOnePaddleNode.addChild(self.ballNode.first!)
+            }
+            else{
+                
+                self.ballNode = self.ballNode.filter{ $0 != ball }
+                
+            }
             
-            self.isPlayingGame = false
-            //self.startGameInfoNode.hidden = false
-            //self.restartGameNode.hidden = true
-            self.speedupTimer!.invalidate()
-            self.powerUpTimer!.invalidate()
-
             
-            positionPlayerTwoPaddleNode()
-            self.playerOnePaddleNode.addChild(self.ballNode.first!)
-
-             println("ponto2")
+            self.winner = 2
+            animateScore(winner)
+            println("ponto2")
         default:
             println()
         }
@@ -525,20 +540,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if powerUp!.name == "flamingBall"
             {
                 let velocity = self.ballNode.first!.physicsBody!.velocity
-                //remember to set more than one flame
-                self.flames = SKEmitterNode(fileNamed: "exampleFire")
 
                 for i in self.ballNode
                 {
+                    let selectedFlame = SKEmitterNode(fileNamed: "exampleFire")
+                    self.flames.append(selectedFlame)
                     i.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
+                    i.addChild(selectedFlame)
+                    selectedFlame.targetNode = self
                 }
-                
-                self.ballNode.first!.addChild(self.flames!)
-                self.flames?.targetNode = self
                 flaming = true
                 println("pegando fogo")
                 
             }
+            if powerUp!.name == "multiBall"
+            {
+                
+             //   self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
+         //       self.addChild(self.ballNode.first!)
+                print("multiball do poder")
+            }
+            
+            
+            
+            
+            
+            
             return
 
             
@@ -579,8 +606,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //change flames direction
         if flaming
         {
-            self.flames?.emissionAngle = CGFloat(M_PI ) + atan2(self.ballNode.first!.physicsBody!.velocity.dy,self.ballNode.first!.physicsBody!.velocity.dx)
-            self.flames?.speed = self.ballNode.first!.speed
+            for i in self.flames
+            {
+                i.emissionAngle = CGFloat(M_PI ) + atan2(firstBody.velocity.dy,firstBody.velocity.dx)
+                i.speed = firstBody.node!.speed
+            }
+           
             
         }
     }
@@ -590,7 +621,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     {
         flaming = false
         flamingTimer = 0
-        self.flames?.removeFromParent()
+        for i in self.flames
+        {
+            i.removeFromParent()
+        }
+        self.flames = []
     }
     
     //reset powerUp
