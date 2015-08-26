@@ -33,7 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var isPlayingGame: Bool = false
     //ball node
-    var ballNode : SKSpriteNode?
+    var ballNode : [SKSpriteNode] = []
     //powerUp node
     var powerUp : SKSpriteNode?
     
@@ -73,8 +73,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     //sounds
     var bounceSoundAction : SKAction?
     var failSoundAction : SKAction?
-    
-    var gameBalls: GameBalls?
     
     var firstRound: Bool = true
     var paddleWithBall: Int = 1
@@ -207,31 +205,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         //Create the ball
         if firstRound {
-            self.ballNode = NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0)
-        }
-        
-        if winner == 1{
-            positionPlayerOnePaddleNode()
-            self.ballNode!.removeFromParent()
-            self.addChild(self.ballNode!)
+            self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
+            self.addChild(self.ballNode.first!)
         }else{
-            positionPlayerTwoPaddleNode()
-            self.ballNode!.removeFromParent()
-            self.addChild(self.ballNode!)
+        
+            if winner == 1{
+                positionPlayerOnePaddleNode()
+                self.addChild(self.ballNode.first!)
+            }else{
+                positionPlayerTwoPaddleNode()
+                self.addChild(self.ballNode.first!)
+            }
         }
         
         var startingVelocityX: CGFloat = kStartingVelocityX
-        var startingVelocityY: CGFloat = 0
+        var startingVelocityY: CGFloat = kStartingVelocityY
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
             startingVelocityX *= kIpadMultFactor
-            startingVelocityY *= 0
+            startingVelocityY *= kIpadMultFactor
         }
+        startingVelocityX = sqrt( startingVelocityX * startingVelocityX + startingVelocityY * startingVelocityY)
         if self.paddleWithBall == 2 {
             startingVelocityX = -startingVelocityX
         }
+        startingVelocityY = 0 
         
         //Start ball and timer to speedup the ball
-        self.ballNode!.physicsBody!.velocity = CGVectorMake(startingVelocityX, startingVelocityY)
+        self.ballNode.first!.physicsBody!.velocity = CGVectorMake(startingVelocityX, startingVelocityY)
+        
         self.speedupTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(kSpeedupInterval), target: self, selector: Selector("speedUpTheBall"), userInfo: nil, repeats: true)
         self.powerUpTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(kSpeedupInterval), target: self, selector: Selector("powerItUp"), userInfo: nil, repeats: true)
         firstRound = false
@@ -239,7 +240,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func restartTheGame() {
         //Remove the ball
-        self.ballNode!.removeFromParent()
+        self.ballNode.first!.removeFromParent()
         //Stop Timer
         self.speedupTimer!.invalidate()
         //self.speedupTimer = nil
@@ -296,6 +297,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }))
     }
     
+    
     func goBackToMenu(){
         //Return to the menu
         if((self.delegate?.respondsToSelector(Selector("returnToMenu"))) == true){
@@ -304,14 +306,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
-    func pointForPlayer(player: Int){
-        self.returnToMenuNode.hidden = false
-
+    
+    func pointForPlayer(player: Int, ball: SKSpriteNode){
+        
         switch player {
         case 1:
             self.playerOneScore++
             self.paddleWithBall = 2
-            self.ballNode!.physicsBody!.velocity = CGVector.zeroVector
+            ball.physicsBody!.velocity = CGVector.zeroVector
+            ball.removeFromParent()
+            //check if there are no more balls in game
             self.isPlayingGame = false
             //self.startGameInfoNode.hidden = false
             //self.restartGameNode.hidden = true
@@ -319,8 +323,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.powerUpTimer!.invalidate()
             
             positionPlayerOnePaddleNode()
-            self.ballNode!.removeFromParent()
-            self.playerTwoPaddleNode.addChild(self.ballNode!)
+            self.playerTwoPaddleNode.addChild(self.ballNode.first!)
             self.winner = 1
             animateScore(winner)
             println("ponto1")
@@ -329,7 +332,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         case 2:
             self.playerTwoScore++
             self.paddleWithBall = 1
-            self.ballNode!.physicsBody!.velocity = CGVector.zeroVector
+            ball.physicsBody!.velocity = CGVector.zeroVector
+            ball.removeFromParent()
+            self.winner = 2
+            animateScore(winner)
+            //check if there are no more balls in game
+            
+            
             self.isPlayingGame = false
             //self.startGameInfoNode.hidden = false
             //self.restartGameNode.hidden = true
@@ -338,13 +347,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
 
             
             positionPlayerTwoPaddleNode()
-            self.ballNode!.removeFromParent()
-            self.playerOnePaddleNode.addChild(self.ballNode!)
-            self.winner = 2
-            animateScore(winner)
-             println("ponto2")
+            self.playerOnePaddleNode.addChild(self.ballNode.first!)
 
-            //self.speedupTimer = nil
+             println("ponto2")
         default:
             println()
         }
@@ -353,18 +358,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func positionPlayerOnePaddleNode(){
-        let tempPhysicsBody = self.ballNode!.physicsBody
-        self.ballNode!.physicsBody = nil
-        self.ballNode!.position = CGPointMake(self.playerTwoPaddleNode.position.x - 45, self.playerTwoPaddleNode.position.y)
-        self.ballNode!.physicsBody = tempPhysicsBody
+        let tempPhysicsBody = self.ballNode.first!.physicsBody
+        self.ballNode.first!.physicsBody = nil
+        self.ballNode.first!.position = CGPointMake(self.playerTwoPaddleNode.position.x - 45, self.playerTwoPaddleNode.position.y)
+        self.ballNode.first!.physicsBody = tempPhysicsBody
 
     }
     
     func positionPlayerTwoPaddleNode(){
-        let tempPhysicsBody = self.ballNode!.physicsBody
-        self.ballNode!.physicsBody = nil
-        self.ballNode!.position = CGPointMake(self.playerOnePaddleNode.position.x + 45, self.playerOnePaddleNode.position.y)
-        self.ballNode!.physicsBody = tempPhysicsBody
+        let tempPhysicsBody = self.ballNode.first!.physicsBody
+        self.ballNode.first!.physicsBody = nil
+        self.ballNode.first!.position = CGPointMake(self.playerOnePaddleNode.position.x + 45, self.playerOnePaddleNode.position.y)
+        self.ballNode.first!.physicsBody = tempPhysicsBody
 
     }
     
@@ -414,8 +419,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             flamingTimer++
             if flamingTimer >= flamingLimit{
                 println("apaguei")
-                let velocity = self.ballNode!.physicsBody!.velocity
-                self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx / 2  , velocity.dy / 2)
+                let velocity = self.ballNode.first!.physicsBody!.velocity
+                for i in self.ballNode
+                {
+                    i.physicsBody!.velocity = CGVectorMake(velocity.dx / 2  , velocity.dy / 2)
+                }
                 resetFlames()
                 
             }
@@ -429,9 +437,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //Method called by the timer
     func speedUpTheBall() {
-        var velocityX: CGFloat = self.ballNode!.physicsBody!.velocity.dx * kVelocityMultFactor
-        var velocityY: CGFloat = self.ballNode!.physicsBody!.velocity.dy * kVelocityMultFactor
-        self.ballNode!.physicsBody!.velocity = CGVectorMake(velocityX, velocityY)
+        var velocityX: CGFloat = self.ballNode.first!.physicsBody!.velocity.dx * kVelocityMultFactor
+        var velocityY: CGFloat = self.ballNode.first!.physicsBody!.velocity.dy * kVelocityMultFactor
+        for i in self.ballNode
+        {
+            i.physicsBody!.velocity = CGVectorMake(velocityX, velocityY)
+        }
         
         
     }
@@ -513,10 +524,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //check if the powerUp is the flamingBall
             if powerUp!.name == "flamingBall"
             {
-                let velocity = self.ballNode!.physicsBody!.velocity
-                self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
+                let velocity = self.ballNode.first!.physicsBody!.velocity
+                //remember to set more than one flame
                 self.flames = SKEmitterNode(fileNamed: "exampleFire")
-                self.ballNode?.addChild(self.flames!)
+
+                for i in self.ballNode
+                {
+                    i.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
+                }
+                
+                self.ballNode.first!.addChild(self.flames!)
                 self.flames?.targetNode = self
                 flaming = true
                 println("pegando fogo")
@@ -534,7 +551,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             
             //ball touched left side
             if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
-                self.pointForPlayer(2)
+                self.pointForPlayer(2,ball: firstBody.node as! SKSpriteNode)
                 self.runAction(self.failSoundAction)
                 resetFlames()
                 resetPowerUp()
@@ -543,7 +560,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             else {
                 //ball touched the right side
                 if firstBody.node!.position.x >= (self.size.width - firstBody.node!.frame.size.width) {
-                    self.pointForPlayer(1)
+                    self.pointForPlayer(1,ball: firstBody.node as! SKSpriteNode)
                     self.runAction(self.failSoundAction)
                     resetFlames()
                     resetPowerUp()
@@ -562,8 +579,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //change flames direction
         if flaming
         {
-            self.flames?.emissionAngle = CGFloat(M_PI ) + atan2(self.ballNode!.physicsBody!.velocity.dy,self.ballNode!.physicsBody!.velocity.dx)
-            self.flames?.speed = self.ballNode!.speed
+            self.flames?.emissionAngle = CGFloat(M_PI ) + atan2(self.ballNode.first!.physicsBody!.velocity.dy,self.ballNode.first!.physicsBody!.velocity.dx)
+            self.flames?.speed = self.ballNode.first!.speed
             
         }
     }
@@ -596,19 +613,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 
                 //Check if a powerUp is being clicked
                 let node = self.nodeAtPoint(location)
-                if node.name == "flamingBall"
-                {
-                    let velocity = self.ballNode!.physicsBody!.velocity
-                    self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
-                    self.powerUp?.removeFromParent()
-                    self.flames = SKEmitterNode(fileNamed: "exampleFire")
-                    self.ballNode?.addChild(self.flames!)
-                    self.flames?.targetNode = self
-                    flaming = true
-                    println("pegando fogo")
-                    
-                }
-
                 
                 if node == self.returnToMenuNode{
                     println("return")
@@ -647,7 +651,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 
                 if node != self.playerOnePaddleNode && node != self.playerTwoPaddleNode {
                     //Start Playing
+                    self.ballNode.first?.removeFromParent()
+
                     self.startPlayingTheGame()
+
                 }
                 
                 if self.playerOnePaddleControlTouch == nil {
