@@ -267,6 +267,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func endOfTheGame(){
+        //Show the back arrow, in case the user wants to go to the menu
+        self.returnToMenuNode.hidden = false
+        
+        //Check if the game is over
         if (self.playerOneScore == highScore)&&(highScore != 0) {
             self.playerOneScoreNode.removeAllActions()
             self.winnerInfoNode.text = "Player 1 wins!"
