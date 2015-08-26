@@ -27,7 +27,7 @@ class PowerUpController: NSObject {
         
         let node =  SKSpriteNode(imageNamed: randomPower)
         node.name = randomPower
-        node.size = CGSizeMake(45, 45)
+        node.size = CGSizeMake(screenSize.height/10, screenSize.height/10)
         node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
         node.position = getRandomPosition(randomPower, withScreenSize: screenSize)
         
@@ -38,10 +38,11 @@ class PowerUpController: NSObject {
     {
         
         var location = CGPoint()
+        let y = arc4random_uniform(UInt32(withScreenSize.height - 20.0)) + 20
         
         if forPowerUp == "flamingBall"
         {
-            location = CGPointMake(withScreenSize.width / 2.0, withScreenSize.height / (CGFloat(random()%10 + 1)/3))
+            location = CGPointMake(withScreenSize.width / 2.0, CGFloat(y))
         }
         else
         {
