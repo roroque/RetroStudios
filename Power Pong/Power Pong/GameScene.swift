@@ -43,9 +43,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var flamingTimer = 0
     var flamingLimit = 3
     
-    
-    
-    
     //paddle nodes
     var playerOnePaddleNode : SKShapeNode!
     var playerTwoPaddleNode : SKShapeNode!
@@ -66,6 +63,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var playerTwoScore : Int = 0
     //timer for speed-up
     var speedupTimer : NSTimer?
+    //timer for powerUp
+    var powerUpTimer : NSTimer?
     //sounds
     var bounceSoundAction : SKAction?
     var failSoundAction : SKAction?
@@ -198,10 +197,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         var startingVelocityX: CGFloat = kStartingVelocityX
-        var startingVelocityY: CGFloat = kStartingVelocityY
+        var startingVelocityY: CGFloat = 0
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
             startingVelocityX *= kIpadMultFactor
-            startingVelocityY *= kIpadMultFactor
+            startingVelocityY *= 0
         }
         if self.paddleWithBall == 2 {
             startingVelocityX = -startingVelocityX
@@ -210,7 +209,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Start ball and timer to speedup the ball
         self.ballNode!.physicsBody!.velocity = CGVectorMake(startingVelocityX, startingVelocityY)
         self.speedupTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(kSpeedupInterval), target: self, selector: Selector("speedUpTheBall"), userInfo: nil, repeats: true)
-        
+        self.powerUpTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(kSpeedupInterval), target: self, selector: Selector("powerItUp"), userInfo: nil, repeats: true)
         firstRound = false
     }
     
@@ -220,6 +219,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Stop Timer
         self.speedupTimer!.invalidate()
         //self.speedupTimer = nil
+        self.powerUpTimer?.invalidate()
         
         self.isPlayingGame = false
         self.winnerInfoNode.hidden = false
@@ -261,6 +261,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //self.startGameInfoNode.hidden = false
             self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
+            self.powerUpTimer!.invalidate()
             
             positionPlayerOnePaddleNode()
             self.ballNode!.removeFromParent()
@@ -278,6 +279,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //self.startGameInfoNode.hidden = false
             self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
+            self.powerUpTimer!.invalidate()
+
             
             positionPlayerTwoPaddleNode()
             self.ballNode!.removeFromParent()
@@ -326,14 +329,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func willMoveFromView(view: SKView) {
         //reset timer
         self.speedupTimer!.invalidate()
-        //self.speedupTimer = nil
+        self.powerUpTimer?.invalidate()
     }
     
-    //Method called by the timer
-    func speedUpTheBall() {
-        var velocityX: CGFloat = self.ballNode!.physicsBody!.velocity.dx * kVelocityMultFactor
-        var velocityY: CGFloat = self.ballNode!.physicsBody!.velocity.dy * kVelocityMultFactor
-        self.ballNode!.physicsBody!.velocity = CGVectorMake(velocityX, velocityY)
+    
+    //method called by the timer
+    func powerItUp()
+    {
         
         powerUpShouldAppear++
         if powerUpShouldAppear >= powerUpTime
@@ -346,37 +348,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.powerUp = PowerUpController().getRandomPowerUp(self.size)
             
             self.addChild(powerUp!)
-
-          
-
-           // self.powerUp!.physicsBody!.collisionBitMask = 0
-         //   println(self.powerUp!.physicsBody!.collisionBitMask)
-          //  println(self.ballNode!.physicsBody!.collisionBitMask)
-            
-          //  self.powerUp!.physicsBody!.collisionBitMask =
-            
             self.powerUp!.physicsBody!.categoryBitMask = powerUpCategory
             self.powerUp!.physicsBody!.collisionBitMask = 0
             self.powerUp?.physicsBody!.contactTestBitMask = ballCategory
-
+            
         }
-        
         if flaming
         {
+            println(flamingTimer)
             flamingTimer++
             if flamingTimer >= flamingLimit{
-                flamingTimer = 0
-                flames?.removeFromParent()
                 println("apaguei")
                 let velocity = self.ballNode!.physicsBody!.velocity
                 self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx / 2  , velocity.dy / 2)
-                flaming = false
-
+                resetFlames()
+                
             }
             
         }
+
+
         
-        
+    }
+    
+    
+    //Method called by the timer
+    func speedUpTheBall() {
+        var velocityX: CGFloat = self.ballNode!.physicsBody!.velocity.dx * kVelocityMultFactor
+        var velocityY: CGFloat = self.ballNode!.physicsBody!.velocity.dy * kVelocityMultFactor
+        self.ballNode!.physicsBody!.velocity = CGVectorMake(velocityX, velocityY)
         
         
     }
@@ -450,15 +450,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             secondBody = contact.bodyA
         }
       
-        
+        //check if passed through a powerUp
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == powerUpCategory
         {
-            
+            resetPowerUp()
+            resetFlames()
+            //check if the powerUp is the flamingBall
             if powerUp!.name == "flamingBall"
             {
                 let velocity = self.ballNode!.physicsBody!.velocity
                 self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
-                self.powerUp?.removeFromParent()
                 self.flames = SKEmitterNode(fileNamed: "exampleFire")
                 self.ballNode?.addChild(self.flames!)
                 self.flames?.targetNode = self
@@ -476,21 +477,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Check if we have a ball with a corner contact
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == cornerCategory {
             
-            
             //ball touched left side
             if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
                 self.pointForPlayer(2)
                 self.runAction(self.failSoundAction)
-                flaming = false
-                powerUp?.removeFromParent()
+                resetFlames()
+                resetPowerUp()
+
             }
             else {
                 //ball touched the right side
                 if firstBody.node!.position.x >= (self.size.width - firstBody.node!.frame.size.width) {
                     self.pointForPlayer(1)
                     self.runAction(self.failSoundAction)
-                    flaming = false
-                    powerUp?.removeFromParent()
+                    resetFlames()
+                    resetPowerUp()
+
                 }
                 else {
                     self.runAction(self.bounceSoundAction)
@@ -500,40 +502,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Check if we have a ball and pad contact
         else if(firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory){
             self.runAction(self.bounceSoundAction)
-            //you can react here if you want to customize the ball movement or direction
-            //in original pong direction of the ball after it hits the paddle depends on
-            //what part of the paddle does it hit
-            //so you can customize it as you want
-//            var paddleNode: SKSpriteNode = secondBody.node as! SKSpriteNode
-//            var ballPosition: CGPoint = self.ballNode!.position
-//            var firstThird: CGFloat = (paddleNode.position.y - paddleNode.size.height / 2.0) + paddleNode.size.height * (1.0 / 3.0)
-//            var secondThird: CGFloat = (paddleNode.position.y - paddleNode.size.height / 2.0) + paddleNode.size.height * (2.0 / 3.0)
-//            var dx: CGFloat = self.ballNode!.physicsBody!.velocity.dx
-//            var dy: CGFloat = self.ballNode!.physicsBody!.velocity.dy
-//            if ballPosition.y < firstThird {
-//                //ball hits the left part
-//                if dy > 0 {
-//                    self.ballNode!.physicsBody!.velocity = CGVectorMake(dx, -dy)
-//                }
-//            }
-//            else {
-//                if ballPosition.y > secondThird {
-//                    //ball hits the left part
-//                    if dy < 0 {
-//                        self.ballNode!.physicsBody!.velocity = CGVectorMake(dx, -dy)
-//                    }
-//                }
-//            }
+            
         }
+        //change flames direction
         if flaming
         {
             self.flames?.emissionAngle = CGFloat(M_PI ) + atan2(self.ballNode!.physicsBody!.velocity.dy,self.ballNode!.physicsBody!.velocity.dx)
             self.flames?.speed = self.ballNode!.speed
             
         }
-        
-        
-        
+    }
+    
+    //reset flames
+    func resetFlames()
+    {
+        flaming = false
+        flamingTimer = 0
+        self.flames?.removeFromParent()
+    }
+    
+    //reset powerUp
+    func resetPowerUp()
+    {
+        powerUp?.removeFromParent()
+        powerUpShouldAppear = 0
         
     }
     
@@ -545,23 +537,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             for touch in touches as! Set<UITouch> {
                 //Set touch to move paddles
                 var location: CGPoint = touch.locationInNode(self)
-                
-                
-                //Check if a powerUp is being clicked
-                let node = self.nodeAtPoint(location)
-                if node.name == "flamingBall"
-                {
-                    let velocity = self.ballNode!.physicsBody!.velocity
-                    self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
-                    self.powerUp?.removeFromParent()
-                    self.flames = SKEmitterNode(fileNamed: "exampleFire")
-                    self.ballNode?.addChild(self.flames!)
-                    self.flames?.targetNode = self
-                    flaming = true
-                    println("pegando fogo")
-                    
-                }
-
                 
                 
                 
