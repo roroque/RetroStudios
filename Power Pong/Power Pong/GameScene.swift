@@ -55,6 +55,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var returnToMenuNode : SKSpriteNode!
     //start game info node
     var startGameInfoNode : SKLabelNode!
+    var outlineGameInfoNode : SKLabelNode!
+    var backgroundStartGameInfoNode : SKShapeNode!
+    
     //winner info node
     var winnerInfoNode : SKLabelNode!
     //touches
@@ -85,6 +88,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Setup the scene
         self.backgroundColor = SKColor.brownColor()
         var background = NodesCreator.createBackgroud(self.size)
+        background.zPosition = -2
         self.addChild(background)
         
         self.physicsWorld.contactDelegate = self
@@ -146,8 +150,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(self.returnToMenuNode)
         
         //start game info node
-        self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
+        self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1.0), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
         self.addChild(self.startGameInfoNode)
+        
+        self.outlineGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.blackColor(), xPos: 2, yPos: 2, text: startGameInfoNode.text)
+        self.outlineGameInfoNode.zPosition = -1
+        self.startGameInfoNode.addChild(self.outlineGameInfoNode)
+        
+        self.backgroundStartGameInfoNode = SKShapeNode(rectOfSize: CGSize(width: self.startGameInfoNode.fontSize * 5.5, height: self.startGameInfoNode.fontSize * 1.8), cornerRadius: 20)
+        self.backgroundStartGameInfoNode.fillColor = UIColor.whiteColor()
+        self.backgroundStartGameInfoNode.alpha = 0.45
+        //self.backgroundStartGameInfoNode.zPosition = -1
+        self.backgroundStartGameInfoNode.lineWidth = 0
+        self.backgroundStartGameInfoNode.position = CGPoint(x: 0, y: self.startGameInfoNode.fontSize/3)
+        self.startGameInfoNode.addChild(self.backgroundStartGameInfoNode)
         
         //winner info node
         self.winnerInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 4.0, text: "")
@@ -260,6 +276,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.winnerInfoNode.text = "Player 2 wins!"
             self.restartTheGame()
         }
+        changeColorForLabelNode(self.winnerInfoNode, toColor: SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0), withDuration: 5.0)
+    }
+    
+    func changeColorForLabelNode(labelNode: SKLabelNode, toColor: SKColor, withDuration: NSTimeInterval) {
+        labelNode.runAction(SKAction.customActionWithDuration(withDuration, actionBlock: {
+            node, elapsedTime in
+            
+            let label = node as! SKLabelNode
+            
+            let toColorComponents = CGColorGetComponents(toColor.CGColor)
+            let fromColorComponents = CGColorGetComponents(label.fontColor.CGColor)
+            
+            let finalRed = fromColorComponents[0] + (toColorComponents[0] - fromColorComponents[0])*CGFloat(elapsedTime / CGFloat(withDuration))
+            let finalGreen = fromColorComponents[1] + (toColorComponents[1] - fromColorComponents[1])*CGFloat(elapsedTime / CGFloat(withDuration))
+            let finalBlue = fromColorComponents[2] + (toColorComponents[2] - fromColorComponents[2])*CGFloat(elapsedTime / CGFloat(withDuration))
+            let finalAlpha = fromColorComponents[3] + (toColorComponents[3] - fromColorComponents[3])*CGFloat(elapsedTime / CGFloat(withDuration))
+            
+            labelNode.fontColor = SKColor(red: finalRed, green: finalGreen, blue: finalBlue, alpha: finalAlpha)
+        }))
     }
     
     
