@@ -157,12 +157,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.outlineGameInfoNode.zPosition = -1
         self.startGameInfoNode.addChild(self.outlineGameInfoNode)
         
-        self.backgroundStartGameInfoNode = SKShapeNode(rectOfSize: CGSize(width: 330, height: 100), cornerRadius: 20)
+        self.backgroundStartGameInfoNode = SKShapeNode(rectOfSize: CGSize(width: self.startGameInfoNode.fontSize * 5.5, height: self.startGameInfoNode.fontSize * 1.8), cornerRadius: 20)
         self.backgroundStartGameInfoNode.fillColor = UIColor.whiteColor()
         self.backgroundStartGameInfoNode.alpha = 0.45
         //self.backgroundStartGameInfoNode.zPosition = -1
         self.backgroundStartGameInfoNode.lineWidth = 0
-        self.backgroundStartGameInfoNode.position = CGPoint(x: 0, y: 20)
+        self.backgroundStartGameInfoNode.position = CGPoint(x: 0, y: self.startGameInfoNode.fontSize/3)
         self.startGameInfoNode.addChild(self.backgroundStartGameInfoNode)
         
         //winner info node
@@ -276,7 +276,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.winnerInfoNode.text = "Player 2 wins!"
             self.restartTheGame()
         }
-        changeColorForLabelNode(self.winnerInfoNode, toColor: SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0), withDuration: 20.0)
+        changeColorForLabelNode(self.winnerInfoNode, toColor: SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0), withDuration: 5.0)
     }
     
     func changeColorForLabelNode(labelNode: SKLabelNode, toColor: SKColor, withDuration: NSTimeInterval) {
