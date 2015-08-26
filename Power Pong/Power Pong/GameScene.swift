@@ -53,7 +53,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var playerOneScoreNode : SKLabelNode!
     var playerTwoScoreNode : SKLabelNode!
     //restart game node
-    var restartGameNode : SKSpriteNode!
+    //var restartGameNode : SKSpriteNode!
+    //Return to menu node
+    var returnToMenuNode : SKSpriteNode!
     //start game info node
     var startGameInfoNode : SKLabelNode!
     //winner info node
@@ -139,8 +141,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(self.playerTwoScoreNode)
 
         //Restart node
-        self.restartGameNode = NodesCreator.createRestartGameNode("restartNode.png", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)
+        //self.restartGameNode = NodesCreator.createRestartGameNode("restartNode.png", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)
         //self.addChild(self.restartGameNode)
+        
+        //Return to menu node
+        self.returnToMenuNode = NodesCreator.createRestartGameNode("return", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)
+        self.addChild(self.returnToMenuNode)
         
         //start game info node
         self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
@@ -170,7 +176,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.isPlayingGame = true
         self.startGameInfoNode.hidden = true
         self.winnerInfoNode.hidden = true
-        self.restartGameNode.hidden = false
+        //self.restartGameNode.hidden = false
+        self.returnToMenuNode.hidden = true
+
         
         var ballWidth: CGFloat = kBallRadius * 2.0
         var ballHeight: CGFloat = kBallRadius * 2.0
@@ -224,7 +232,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.isPlayingGame = false
         self.winnerInfoNode.hidden = false
         self.startGameInfoNode.hidden = false
-        self.restartGameNode.hidden = true
+        //self.restartGameNode.hidden = true
+        
+        self.returnToMenuNode.hidden = false
+
         //Reset the scores
         self.playerOneScore = 0
         self.playerTwoScore = 0
@@ -250,8 +261,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
+    func goBackToMenu(){
+        //Return to the menu
+        if((self.delegate?.respondsToSelector(Selector("returnToMenu"))) == true){
+            let returnEnabled = self.delegate as! returnToMenu
+            returnEnabled.returnToMenu()
+        }
+    }
+    
     func pointForPlayer(player: Int){
-        
+        self.returnToMenuNode.hidden = false
+
         switch player {
         case 1:
             self.playerOneScore++
@@ -259,7 +279,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.ballNode!.physicsBody!.velocity = CGVector.zeroVector
             self.isPlayingGame = false
             //self.startGameInfoNode.hidden = false
-            self.restartGameNode.hidden = true
+            //self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
             
             positionPlayerOnePaddleNode()
@@ -276,7 +296,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.ballNode!.physicsBody!.velocity = CGVector.zeroVector
             self.isPlayingGame = false
             //self.startGameInfoNode.hidden = false
-            self.restartGameNode.hidden = true
+            //self.restartGameNode.hidden = true
             self.speedupTimer!.invalidate()
             
             positionPlayerTwoPaddleNode()
@@ -563,13 +583,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
 
                 
+                if node == self.returnToMenuNode{
+                    println("return")
+                }
                 
                 
                 //Check if it is at the restart node
-                if CGRectContainsPoint(self.restartGameNode.frame, location) {
-                    self.restartTheGame()
-                    return
-                }
+//                if CGRectContainsPoint(self.restartGameNode.frame, location) {
+//                    self.restartTheGame()
+//                    return
+//                }
+                
+                
+                
                 if self.playerOnePaddleControlTouch == nil {
                     if location.x < self.size.width / 2.0 {
                         self.playerOnePaddleControlTouch = touch
@@ -587,6 +613,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             for touch in touches as! Set<UITouch> {
                 var location: CGPoint = touch.locationInNode(self)
                 let node = self.nodeAtPoint(location)
+                if node == self.returnToMenuNode{
+                    self.goBackToMenu()
+                }
+                self.returnToMenuNode.hidden = true
+                
                 if node != self.playerOnePaddleNode && node != self.playerTwoPaddleNode {
                     //Start Playing
                     self.startPlayingTheGame()
