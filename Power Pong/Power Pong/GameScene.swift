@@ -262,6 +262,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
+    
+    func goBackToMenu(){
+        //Return to the menu
+        if((self.delegate?.respondsToSelector(Selector("returnToMenu"))) == true){
+            let returnEnabled = self.delegate as! returnToMenu
+            returnEnabled.returnToMenu()
+        }
+    }
+    
+    
     func pointForPlayer(player: Int, ball: SKSpriteNode){
         
         switch player {
@@ -568,19 +578,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 
                 //Check if a powerUp is being clicked
                 let node = self.nodeAtPoint(location)
-                if node.name == "flamingBall"
-                {
-                    let velocity = self.ballNode!.physicsBody!.velocity
-                    self.ballNode!.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
-                    self.powerUp?.removeFromParent()
-                    self.flames = SKEmitterNode(fileNamed: "exampleFire")
-                    self.ballNode?.addChild(self.flames!)
-                    self.flames?.targetNode = self
-                    flaming = true
-                    println("pegando fogo")
-                    
-                }
-
                 
                 if node == self.returnToMenuNode{
                     println("return")
