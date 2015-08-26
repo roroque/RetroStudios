@@ -560,8 +560,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if powerUp!.name == "multiBall"
             {
                 
-             //   self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
-         //       self.addChild(self.ballNode.first!)
+               // self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
+             //   self.addChild(self.ballNode.first!)
                 print("multiball do poder")
             }
             
