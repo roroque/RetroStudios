@@ -16,6 +16,7 @@ class PowerUpController: NSObject {
     {
         var randomPower = ""
         let x = random() % 2
+        println(x)
         switch x
         {
         case 0: randomPower = "flamingBall"
@@ -23,12 +24,25 @@ class PowerUpController: NSObject {
        // case:
         default: randomPower = "flamingBall"
         }
+        var ballWidth: CGFloat = kBallRadius * 2.0
+        var ballHeight: CGFloat = kBallRadius * 2.0
+        var ballRadius: CGFloat = kBallRadius
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
+            ballWidth *= kIpadMultFactor;
+            ballHeight *= kIpadMultFactor;
+            ballRadius *= kIpadMultFactor;
+        }
         
         
-        let node =  SKSpriteNode(imageNamed: randomPower)
-        node.name = randomPower
+        var node =  SKSpriteNode(imageNamed: randomPower)
         node.size = CGSizeMake(screenSize.height/10, screenSize.height/10)
         node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
+        if x == 1
+        {
+            node = NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: screenSize.width / 2.0, yPos: screenSize.height / 2.0)
+        }
+        node.name = randomPower
         node.position = getRandomPosition(randomPower, withScreenSize: screenSize)
         
         return node
@@ -42,7 +56,7 @@ class PowerUpController: NSObject {
         
       //  if forPowerUp == "flamingBall"
        // {
-            location = CGPointMake(withScreenSize.width / 2.0, CGFloat(y))
+        location = CGPointMake(withScreenSize.width / 2.0, CGFloat(y))
        // }
       //  else
      //   {
