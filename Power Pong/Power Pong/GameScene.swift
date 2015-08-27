@@ -34,6 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var isPlayingGame: Bool = false
     //ball node
     var ballNode : [SKSpriteNode] = []
+    var noMoreBalls = false
     //powerUp node
     var powerUp : SKSpriteNode?
     
@@ -273,7 +274,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func endOfTheGame(){
         //Show the back arrow, in case the user wants to go to the menu
-        self.returnToMenuNode.hidden = false
+        if noMoreBalls
+        {
+            self.returnToMenuNode.hidden = false
+        }
+        noMoreBalls = false
         
         //Check if the game is over
         if (self.playerOneScore == highScore)&&(highScore != 0) {
@@ -321,6 +326,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             ball.removeFromParent()
              //check if there are no more balls in game
             if self.ballNode.count == 1{
+                noMoreBalls = true
+
                 self.isPlayingGame = false
                 //self.startGameInfoNode.hidden = false
                 //self.restartGameNode.hidden = true
@@ -351,6 +358,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //check if there are no more balls in game
             
             if self.ballNode.count == 1{
+                noMoreBalls = true
                 self.isPlayingGame = false
                 //self.startGameInfoNode.hidden = false
                 //self.restartGameNode.hidden = true
@@ -419,7 +427,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func willMoveFromView(view: SKView) {
         //reset timer
         self.speedupTimer!.invalidate()
-        self.powerUpTimer?.invalidate()
+        self.powerUpTimer!.invalidate()
     }
     
     
@@ -438,9 +446,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.powerUp = PowerUpController().getRandomPowerUp(self.size)
             
             self.addChild(powerUp!)
-            self.powerUp!.physicsBody!.categoryBitMask = powerUpCategory
-            self.powerUp!.physicsBody!.collisionBitMask = 0
-            self.powerUp?.physicsBody!.contactTestBitMask = ballCategory
+            if powerUp?.name != "multiBall"
+            {
+                self.powerUp!.physicsBody!.categoryBitMask = powerUpCategory
+                self.powerUp!.physicsBody!.collisionBitMask = 0
+                self.powerUp?.physicsBody!.contactTestBitMask = ballCategory
+            }
+            else
+            {
+                self.powerUp!.physicsBody!.categoryBitMask = powerUpCategory
+                self.powerUp?.physicsBody!.collisionBitMask = ballCategory
+                self.powerUp?.physicsBody!.contactTestBitMask = ballCategory
+
+            }
             
         }
         if flaming
@@ -467,12 +485,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //Method called by the timer
     func speedUpTheBall() {
-        var velocityX: CGFloat = self.ballNode.first!.physicsBody!.velocity.dx * kVelocityMultFactor
-        var velocityY: CGFloat = self.ballNode.first!.physicsBody!.velocity.dy * kVelocityMultFactor
-        for i in self.ballNode
+        for i in ballNode
         {
+            var velocityX: CGFloat = i.physicsBody!.velocity.dx * kVelocityMultFactor
+            var velocityY: CGFloat = i.physicsBody!.velocity.dy * kVelocityMultFactor
             i.physicsBody!.velocity = CGVectorMake(velocityX, velocityY)
         }
+
         
         
     }
@@ -549,11 +568,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //check if passed through a powerUp
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == powerUpCategory
         {
-            resetPowerUp()
+            
             resetFlames()
             //check if the powerUp is the flamingBall
             if powerUp!.name == "flamingBall"
             {
+                resetPowerUp()
                 self.runAction(self.fireballSoundAction)
 
                 let velocity = self.ballNode.first!.physicsBody!.velocity
@@ -572,20 +592,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
             if powerUp!.name == "multiBall"
             {
-                
-               // self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
-             //   self.addChild(self.ballNode.first!)
+                powerUp?.physicsBody?.categoryBitMask =  firstBody.categoryBitMask
+                powerUp?.physicsBody?.collisionBitMask = firstBody.collisionBitMask
+                powerUp?.physicsBody?.contactTestBitMask = firstBody.contactTestBitMask
+                powerUp?.physicsBody?.velocity.dy = -firstBody.velocity.dy
+                powerUp?.physicsBody?.velocity.dx = firstBody.velocity.dx
+
+                self.ballNode.append(powerUp!)
+                powerUp = nil
                 print("multiball do poder")
             }
-            
-            
-            
-            
-            
-            
             return
-
-            
         }
         
         
@@ -594,24 +611,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == cornerCategory {
             
             //ball touched left side
-            if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
-                self.pointForPlayer(2,ball: firstBody.node as! SKSpriteNode)
-                self.runAction(self.failSoundAction)
-                resetFlames()
-                resetPowerUp()
-
-            }
-            else {
-                //ball touched the right side
-                if firstBody.node!.position.x >= (self.size.width - firstBody.node!.frame.size.width) {
-                    self.pointForPlayer(1,ball: firstBody.node as! SKSpriteNode)
+            if firstBody.node != nil{
+                if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
+                    self.pointForPlayer(2,ball: firstBody.node as! SKSpriteNode)
                     self.runAction(self.failSoundAction)
                     resetFlames()
                     resetPowerUp()
 
                 }
                 else {
-                    self.runAction(self.bounceSoundAction)
+                    //ball touched the right side
+                    if firstBody.node!.position.x >= (self.size.width - firstBody.node!.frame.size.width) {
+                        self.pointForPlayer(1,ball: firstBody.node as! SKSpriteNode)
+                        self.runAction(self.failSoundAction)
+                        resetFlames()
+                        resetPowerUp()
+
+                    }
+                    else {
+                        self.runAction(self.bounceSoundAction)
+                    }
                 }
             }
         }
