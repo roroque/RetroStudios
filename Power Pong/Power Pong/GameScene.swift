@@ -28,6 +28,8 @@ let ballCategory : UInt32 = 0x1 << 0
 let cornerCategory : UInt32 = 0x1 << 1
 let paddleCategory : UInt32  = 0x1 << 2
 let powerUpCategory : UInt32 = 0x1 << 3
+let leftWallCategory : UInt32 = 0x1 << 4
+let rightWallCategory : UInt32 = 0x1 << 5
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
@@ -96,12 +98,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0)
         
-        //Setup physics body for scene
-        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
-        self.physicsBody!.categoryBitMask = cornerCategory
-        self.physicsBody!.dynamic = false
-        self.physicsBody!.friction = 0.0
-        self.physicsBody!.restitution = 1.0
+        //Setup the walls
+        var topWall = SKNode()
+        topWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.size.width, 1))
+        topWall.physicsBody!.categoryBitMask = cornerCategory
+        topWall.physicsBody!.affectedByGravity = false
+        topWall.position = CGPointMake(self.size.width/2, self.size.height)
+        topWall.physicsBody!.dynamic = false
+        self.addChild(topWall)
+        var bottomWall = SKNode()
+        bottomWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.size.width, 1))
+        bottomWall.physicsBody!.categoryBitMask = cornerCategory
+        bottomWall.physicsBody!.affectedByGravity = false
+        bottomWall.position = CGPointMake(self.size.width/2,0)
+        bottomWall.physicsBody!.dynamic = false
+        self.addChild(bottomWall)
+        var leftWall = SKNode()
+        leftWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(1, self.size.height))
+        leftWall.physicsBody!.categoryBitMask = leftWallCategory
+        leftWall.physicsBody!.affectedByGravity = false
+        leftWall.position = CGPointMake(0, self.size.height / 2)
+        leftWall.physicsBody!.dynamic = false
+        self.addChild(leftWall)
+        var rightWall = SKNode()
+        rightWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(1, self.size.height))
+        rightWall.physicsBody!.categoryBitMask = rightWallCategory
+        rightWall.physicsBody!.affectedByGravity = false
+        rightWall.position = CGPointMake(self.size.width, self.size.height / 2)
+        rightWall.physicsBody!.dynamic = false
+        self.addChild(rightWall)
         
         //Dimensions
         var paddleWidth: CGFloat = kPaddleWidth
@@ -210,7 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         //Create the ball
         if firstRound {
-            self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory, xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
+            self.ballNode.append (NodesCreator.createBall(ballWidth, ballHeight: ballHeight, ballRadius: ballRadius, category: ballCategory, contact: cornerCategory | paddleCategory | leftWallCategory | rightWallCategory , xPos: self.size.width / 2.0, yPos: self.size.height / 2.0))
             self.addChild(self.ballNode.first!)
         }else{
         
@@ -577,48 +602,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
          //       self.addChild(self.ballNode.first!)
                 print("multiball do poder")
             }
-            
-            
-            
-            
-            
-            
             return
-
-            
         }
         
+        //Check if the contact was with the ball and the left wall
+        if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == leftWallCategory {
+            self.pointForPlayer(2,ball: firstBody.node as! SKSpriteNode)
+            self.runAction(self.failSoundAction)
+            resetFlames()
+            resetPowerUp()
+        }
         
+        //Check if the contact was with the ball and the right wall
+        if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == rightWallCategory {
+            self.pointForPlayer(1,ball: firstBody.node as! SKSpriteNode)
+            self.runAction(self.failSoundAction)
+            resetFlames()
+            resetPowerUp()
+        }
         
         //Check if we have a ball with a corner contact
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == cornerCategory {
-            
-            //ball touched left side
-            if firstBody.node!.position.x <= firstBody.node!.frame.size.width {
-                self.pointForPlayer(2,ball: firstBody.node as! SKSpriteNode)
-                self.runAction(self.failSoundAction)
-                resetFlames()
-                resetPowerUp()
-
-            }
-            else {
-                //ball touched the right side
-                if firstBody.node!.position.x >= (self.size.width - firstBody.node!.frame.size.width) {
-                    self.pointForPlayer(1,ball: firstBody.node as! SKSpriteNode)
-                    self.runAction(self.failSoundAction)
-                    resetFlames()
-                    resetPowerUp()
-
-                }
-                else {
-                    self.runAction(self.bounceSoundAction)
-                }
-            }
+            self.runAction(self.bounceSoundAction)
         }
         //Check if we have a ball and pad contact
-        else if(firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory){
+        if(firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory){
             self.runAction(self.bounceSoundAction)
-            
         }
         //change flames direction
         if flaming
@@ -749,8 +758,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-    
-//    override func update(currentTime: CFTimeInterval) {
-//        /* Called before each frame is rendered */
-//    }
 }
