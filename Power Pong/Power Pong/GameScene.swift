@@ -22,6 +22,8 @@ let kPaddleMoveMult: CGFloat = 1.5 //multiply factor when moving fingers to move
 var powerUpShouldAppear = 0 //powerUp counter till some powerUp should appear
 let powerUpTime = 10//time till powerUp appears
 var highScore = 3//maximum punctuation of the game
+var middleLineWidth: CGFloat = 4.0
+var middleLineHeight: CGFloat = 80.0
 
 //categories for detecting contacts between nodes
 let ballCategory : UInt32 = 0x1 << 0
@@ -132,8 +134,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Dimensions
         var paddleWidth: CGFloat = kPaddleWidth
         var paddleHeight: CGFloat = kPaddleHeight
-        var middleLineWidth: CGFloat = 4.0
-        var middleLineHeight: CGFloat = 20.0
         var scoreFontSize: CGFloat = kScoreFontSize
         var restartNodeWidthHeight: CGFloat = kRestartGameWidthHeight
         
@@ -147,15 +147,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             restartNodeWidthHeight *= kIpadMultFactor
         }
         
-        //Middle line 
-//        var numberOfLines = Int(size.height / (2 * middleLineHeight))
-//        var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
-//        for var i = 0; i < numberOfLines; i++ {
-//            var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 0.5), size: CGSizeMake(middleLineWidth, middleLineHeight))
-//            lineNode.position = linePosition
-//            linePosition.y += 2 * middleLineHeight
-//            self.addChild(lineNode)
-//        }
         
         //Paddles
         self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.whiteColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
@@ -596,6 +587,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             
             resetFlames()
             //check if the powerUp is the flamingBall
+            if powerUp!.name == "barrier"
+            {
+                resetPowerUp()
+
+                //Middle line
+                var numberOfLines = 2
+                var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
+                for var i = 0; i < numberOfLines; i++ {
+                    var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 1.0), size: CGSizeMake(middleLineWidth, middleLineHeight))
+                    lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
+                    lineNode.physicsBody?.dynamic = false
+                    lineNode.physicsBody?.categoryBitMask = cornerCategory
+                    lineNode.position = linePosition
+                    linePosition.y +=  2 * middleLineHeight
+                    self.addChild(lineNode)
+                }
+                
+            }
+            
             if powerUp!.name == "flamingBall"
             {
                 resetPowerUp()

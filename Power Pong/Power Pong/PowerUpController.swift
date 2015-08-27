@@ -20,8 +20,8 @@ class PowerUpController: NSObject {
         switch x
         {
         case 0: randomPower = "flamingBall"
-        case 1 : randomPower = "multiBall"
-       // case:
+        case 1: randomPower = "multiBall"
+        //case 2: randomPower = "barrier"
         default: randomPower = "flamingBall"
         }
         var ballWidth: CGFloat = kBallRadius * 2.0
