@@ -117,6 +117,37 @@
 			name = Audios;
 			sourceTree = "<group>";
 		};
+		08D28A501B90C2E600017E0B /* Game Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FA00BB5D1B87912E002DF216 /* exampleFire.sks */,
+				FA00BB5E1B87912E002DF216 /* spark.png */,
+				08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */,
+				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
+				08882D561B8B8F0000278A5F /* GameBacks.swift */,
+				FA00BB631B879430002DF216 /* PowerUpController.swift */,
+			);
+			name = "Game Classes";
+			sourceTree = "<group>";
+		};
+		08D28A511B90C8A200017E0B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				08882D531B8B8BCA00278A5F /* DismissSegue.swift */,
+				FA73F5F91B82644200E35884 /* GameViewController.swift */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		08D28A521B90C8AE00017E0B /* Game Scene */ = {
+			isa = PBXGroup;
+			children = (
+				FA73F5F51B82644200E35884 /* GameScene.sks */,
+				FA73F5F71B82644200E35884 /* GameScene.swift */,
+			);
+			name = "Game Scene";
+			sourceTree = "<group>";
+		};
 		1DDBD6341B86AFDE00319EB0 /* DropDownMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,20 +192,13 @@
 				1DDBD6341B86AFDE00319EB0 /* DropDownMenu */,
 				08C922D91B8B985B00720F8A /* Creators */,
 				08D28A4F1B8E471D00017E0B /* Audios */,
+				08D28A501B90C2E600017E0B /* Game Classes */,
+				08D28A521B90C8AE00017E0B /* Game Scene */,
+				08D28A511B90C8A200017E0B /* ViewController */,
 				FA73F5F31B82644200E35884 /* AppDelegate.swift */,
-				08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */,
-				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
-				08882D561B8B8F0000278A5F /* GameBacks.swift */,
-				FA73F5F51B82644200E35884 /* GameScene.sks */,
-				08882D531B8B8BCA00278A5F /* DismissSegue.swift */,
-				FA73F5F71B82644200E35884 /* GameScene.swift */,
-				FA00BB631B879430002DF216 /* PowerUpController.swift */,
-				FA73F5F91B82644200E35884 /* GameViewController.swift */,
 				FA73F5FB1B82644200E35884 /* Main.storyboard */,
 				FA73F5FE1B82644200E35884 /* Images.xcassets */,
 				FA73F6001B82644200E35884 /* LaunchScreen.xib */,
-				FA00BB5D1B87912E002DF216 /* exampleFire.sks */,
-				FA00BB5E1B87912E002DF216 /* spark.png */,
 				1DDBD6371B86CB6200319EB0 /* Fonts */,
 				FA73F5F11B82644200E35884 /* Supporting Files */,
 			);
@@ -387,8 +411,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -433,8 +457,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -460,7 +484,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
 				INFOPLIST_FILE = "Power Pong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -474,7 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
 				INFOPLIST_FILE = "Power Pong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -486,8 +510,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -508,8 +532,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
