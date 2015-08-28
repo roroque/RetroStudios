@@ -17,6 +17,7 @@ class PowerUpController: NSObject {
         var randomPower = ""
         let x = random() % 3
         println(x)
+        
         switch x
         {
         case 0: randomPower = "flamingBall"

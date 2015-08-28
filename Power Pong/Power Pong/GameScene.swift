@@ -121,33 +121,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         //Setup the walls
-        var topWall = SKNode()
-        topWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.size.width, 1))
-        topWall.physicsBody!.categoryBitMask = cornerCategory
-        topWall.physicsBody!.affectedByGravity = false
-        topWall.position = CGPointMake(self.size.width/2, self.size.height)
-        topWall.physicsBody!.dynamic = false
+        var topWall = NodesCreator.createWall(CGSizeMake(self.size.width, 1), category: cornerCategory, position: CGPointMake(self.size.width/2, self.size.height))
         self.addChild(topWall)
-        var bottomWall = SKNode()
-        bottomWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.size.width, 1))
-        bottomWall.physicsBody!.categoryBitMask = cornerCategory
-        bottomWall.physicsBody!.affectedByGravity = false
-        bottomWall.position = CGPointMake(self.size.width/2,0)
-        bottomWall.physicsBody!.dynamic = false
+        var bottomWall = NodesCreator.createWall(CGSizeMake(self.size.width, 1), category: cornerCategory, position: CGPointMake(self.size.width/2, 0))
         self.addChild(bottomWall)
-        var leftWall = SKNode()
-        leftWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(1, self.size.height))
-        leftWall.physicsBody!.categoryBitMask = leftWallCategory
-        leftWall.physicsBody!.affectedByGravity = false
-        leftWall.position = CGPointMake(0, self.size.height / 2)
-        leftWall.physicsBody!.dynamic = false
+        var leftWall = NodesCreator.createWall(CGSizeMake(1, self.size.height), category: leftWallCategory, position: CGPointMake(0, self.size.height / 2))
         self.addChild(leftWall)
-        var rightWall = SKNode()
-        rightWall.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(1, self.size.height))
-        rightWall.physicsBody!.categoryBitMask = rightWallCategory
-        rightWall.physicsBody!.affectedByGravity = false
-        rightWall.position = CGPointMake(self.size.width, self.size.height / 2)
-        rightWall.physicsBody!.dynamic = false
+        var rightWall = NodesCreator.createWall(CGSizeMake(1, self.size.height), category: rightWallCategory, position: CGPointMake(self.size.width, self.size.height / 2))
         self.addChild(rightWall)
         
         //Dimensions
@@ -646,12 +626,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 {
                     i.physicsBody?.categoryBitMask = cornerCategory
                     i.alpha = 1.0
-                    
                 }
-                
-
-                
-                
             }
             
             if powerUp!.name == "flamingBall"
@@ -680,13 +655,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 powerUp?.physicsBody?.contactTestBitMask = firstBody.contactTestBitMask
                 powerUp?.physicsBody?.velocity.dy = -firstBody.velocity.dy
                 powerUp?.physicsBody?.velocity.dx = firstBody.velocity.dx
-
+                
+                self.runAction(self.bounceSoundAction)
                 self.ballNode.append(powerUp!)
                 powerUp = nil
                 print("multiball do poder")
             }
             return
         }
+        
+        if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == ballCategory {
+            self.runAction(self.bounceSoundAction)
+        }
+        
         
         //Check if the contact was with the ball and the left wall
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == leftWallCategory {

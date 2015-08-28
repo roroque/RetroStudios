@@ -80,6 +80,17 @@ class NodesCreator: NSObject {
         return background
     }
     
+    static func createWall(size: CGSize, category: UInt32, position: CGPoint ) -> SKNode {
+        var wall = SKNode()
+        wall.physicsBody = SKPhysicsBody(rectangleOfSize: size)
+        wall.physicsBody!.categoryBitMask = category
+        wall.physicsBody!.affectedByGravity = false
+        wall.position = position
+        wall.physicsBody!.dynamic = false
+        
+        return wall
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
