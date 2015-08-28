@@ -403,7 +403,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func positionPlayerOnePaddleNode(){
         let tempPhysicsBody = self.ballNode.first!.physicsBody
         self.ballNode.first!.physicsBody = nil
-        self.ballNode.first!.position = CGPointMake(self.playerTwoPaddleNode.position.x - 45, self.playerTwoPaddleNode.position.y)
+        self.ballNode.first!.position = CGPointMake(self.playerTwoPaddleNode.position.x - self.startGameInfoNode.fontSize/1.5, self.playerTwoPaddleNode.position.y)
         self.ballNode.first!.physicsBody = tempPhysicsBody
 
     }
@@ -411,7 +411,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func positionPlayerTwoPaddleNode(){
         let tempPhysicsBody = self.ballNode.first!.physicsBody
         self.ballNode.first!.physicsBody = nil
-        self.ballNode.first!.position = CGPointMake(self.playerOnePaddleNode.position.x + 45, self.playerOnePaddleNode.position.y)
+        self.ballNode.first!.position = CGPointMake(self.playerOnePaddleNode.position.x + self.startGameInfoNode.fontSize/1.5, self.playerOnePaddleNode.position.y)
         self.ballNode.first!.physicsBody = tempPhysicsBody
 
     }

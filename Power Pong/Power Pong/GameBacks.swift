@@ -13,16 +13,17 @@ import UIKit
 @IBDesignable class GameBacks: UIView, DropDownMenuDelegate {
     var dropDownMenu = DropDownMenu()
     
-    var dataImage:NSArray = ["brFlag.png",
+    var dataImage:NSArray = ["black.png",
         "grassBack.png",
         "basketBack.png",
-        "Background.png",
-        "spaceBack.png"]
-    var dataTitle:NSArray =  ["brFlag",
+        "spaceBack.png",
+        "brFlag.png"]
+    
+    var dataTitle:NSArray =  ["black",
         "grassBack",
         "basketBack",
-        "Background",
-        "spaceBack"]
+        "spaceBack",
+        "brFlag"]
     
     var item:DropDownItem!
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -58,7 +59,7 @@ import UIKit
         if let name = defaults.stringForKey("Back"){
             dropDownMenu.menuIconImage = UIImage(named: "\(name).png")
         }else{
-            dropDownMenu.menuIconImage = UIImage(named: "Background")
+            dropDownMenu.menuIconImage = UIImage(named: "black")
         }
         dropDownMenu.dropDownItems = dropdownItems as [AnyObject]
         dropDownMenu.paddingLeft = 10

@@ -59,6 +59,7 @@ class NodesCreator: NSObject {
         ballNode.physicsBody!.dynamic = true
         ballNode.physicsBody!.friction = 0.0
         ballNode.physicsBody!.allowsRotation = false
+        ballNode.zPosition = 1
         ballNode.position = CGPointMake(xPos, yPos)
         
         return ballNode

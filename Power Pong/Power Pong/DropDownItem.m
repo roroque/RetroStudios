@@ -82,22 +82,22 @@
 {
     _iconImage = iconImage;
     [self.iconImageView setImage:self.iconImage];
-    self.iconImageView.contentMode = UIViewContentModeScaleToFill;
+    self.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self updateLayout];
 }
 
 - (void)updateLayout
 {
     
-    CGFloat selfWidth = CGRectGetWidth(self.bounds);
+    //CGFloat selfWidth = CGRectGetWidth(self.bounds);
     CGFloat selfHeight = CGRectGetHeight(self.bounds);
     
     [self.iconImageView setFrame:CGRectMake(self.paddingLeft, 0, selfHeight, selfHeight)];
-    if (self.iconImage) {
-        [self.textLabel setFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame), 0, selfWidth - CGRectGetMaxX(self.iconImageView.frame), selfHeight)];
-    } else {
-        [self.textLabel setFrame:CGRectMake(self.paddingLeft, 0, selfWidth, selfHeight)];
-    }
+//    if (self.iconImage) {
+//        [self.textLabel setFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame), 0, selfWidth - CGRectGetMaxX(self.iconImageView.frame), selfHeight)];
+//    } else {
+//        [self.textLabel setFrame:CGRectMake(self.paddingLeft, 0, selfWidth, selfHeight)];
+//    }
 }
 
 - (void)setPaddingLeft:(CGFloat)paddingLeft
