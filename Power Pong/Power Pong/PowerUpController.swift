@@ -15,13 +15,13 @@ class PowerUpController: NSObject {
     func getRandomPowerUp(screenSize: CGSize) -> SKSpriteNode
     {
         var randomPower = ""
-        let x = random() % 2
+        let x = random() % 3
         println(x)
         switch x
         {
         case 0: randomPower = "flamingBall"
         case 1: randomPower = "multiBall"
-        //case 2: randomPower = "barrier"
+        case 2: randomPower = "barrier"
         default: randomPower = "flamingBall"
         }
         var ballWidth: CGFloat = kBallRadius * 2.0

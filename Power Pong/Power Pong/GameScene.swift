@@ -47,6 +47,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var flames : [SKEmitterNode] = []
     var flamingTimer = 0
     var flamingLimit = 3
+    //barriers
+    var barriers : [SKSpriteNode] = []
+    var barried = false
     
     //paddle nodes
     var playerOnePaddleNode : SKShapeNode!
@@ -100,6 +103,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0)
+        
+        //Middle line
+        var numberOfLines = 2
+        var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
+        for var i = 0; i < numberOfLines; i++ {
+            var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 1.0), size: CGSizeMake(middleLineWidth, middleLineHeight))
+            lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
+            lineNode.physicsBody?.dynamic = false
+            lineNode.physicsBody?.categoryBitMask = 0
+            lineNode.position = linePosition
+            linePosition.y +=  2 * middleLineHeight
+            self.barriers.append(lineNode)
+            lineNode.alpha = 0.0
+            self.addChild(lineNode)
+        }
+        
         
         //Setup the walls
         var topWall = SKNode()
@@ -342,6 +361,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             ball.removeFromParent()
              //check if there are no more balls in game
             if self.ballNode.count == 1{
+                if barried
+                {
+                    for i in self.barriers
+                    {
+                        i.physicsBody?.categoryBitMask = 0
+                        i.alpha = 0.0
+                        
+                    }
+                }
                 noMoreBalls = true
 
                 self.isPlayingGame = false
@@ -374,6 +402,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             //check if there are no more balls in game
             
             if self.ballNode.count == 1{
+                
+                if barried
+                {
+                    for i in self.barriers
+                    {
+                        i.physicsBody?.categoryBitMask = 0
+                        i.alpha = 0.0
+                        
+                    }
+                }
+                
                 noMoreBalls = true
                 self.isPlayingGame = false
                 //self.startGameInfoNode.hidden = false
@@ -451,9 +490,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func powerItUp()
     {
         
+        
         powerUpShouldAppear++
         if powerUpShouldAppear >= powerUpTime
         {
+            
+            if barried
+            {
+                for i in self.barriers
+                {
+                    i.physicsBody?.categoryBitMask = 0
+                    i.alpha = 0.0
+                    
+                }
+            }
+            
             if self.powerUp != nil
             {
                 self.powerUp?.removeFromParent()
@@ -590,19 +641,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if powerUp!.name == "barrier"
             {
                 resetPowerUp()
-
-                //Middle line
-                var numberOfLines = 2
-                var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
-                for var i = 0; i < numberOfLines; i++ {
-                    var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 1.0), size: CGSizeMake(middleLineWidth, middleLineHeight))
-                    lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
-                    lineNode.physicsBody?.dynamic = false
-                    lineNode.physicsBody?.categoryBitMask = cornerCategory
-                    lineNode.position = linePosition
-                    linePosition.y +=  2 * middleLineHeight
-                    self.addChild(lineNode)
+                barried = true
+                for i in self.barriers
+                {
+                    i.physicsBody?.categoryBitMask = cornerCategory
+                    i.alpha = 1.0
+                    
                 }
+                
+
+                
                 
             }
             
