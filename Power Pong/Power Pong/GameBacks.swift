@@ -17,12 +17,14 @@ import UIKit
         "grassBack.png",
         "basketBack.png",
         "spaceBack.png",
+        "usa.png",
         "brFlag.png"]
     
     var dataTitle:NSArray =  ["black",
         "grassBack",
         "basketBack",
         "spaceBack",
+        "usa",
         "brFlag"]
     
     var item:DropDownItem!

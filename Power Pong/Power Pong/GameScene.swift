@@ -24,6 +24,7 @@ let powerUpTime = 10//time till powerUp appears
 var highScore = 3//maximum punctuation of the game
 var middleLineWidth: CGFloat = 4.0
 var middleLineHeight: CGFloat = 80.0
+let orangeColor = SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0)
 
 //categories for detecting contacts between nodes
 let ballCategory : UInt32 = 0x1 << 0
@@ -68,6 +69,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //winner info node
     var winnerInfoNode : SKLabelNode!
+    var outlineWinnerInfoNode : SKLabelNode!
+    var backgroundWinnerInfoNode : SKShapeNode!
     //touches
     var playerOnePaddleControlTouch : UITouch?
     var playerTwoPaddleControlTouch : UITouch?
@@ -96,28 +99,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         highScore = defaults.integerForKey("PointLimit")
         
         //Setup the scene
-        self.backgroundColor = SKColor.brownColor()
+        //self.backgroundColor = SKColor.brownColor()
         var background = NodesCreator.createBackgroud(self.size)
         background.zPosition = -2
         self.addChild(background)
         
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0)
-        
-        //Middle line
-        var numberOfLines = 2
-        var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
-        for var i = 0; i < numberOfLines; i++ {
-            var lineNode: SKSpriteNode = SKSpriteNode(color: SKColor(white: 1.0, alpha: 1.0), size: CGSizeMake(middleLineWidth, middleLineHeight))
-            lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
-            lineNode.physicsBody?.dynamic = false
-            lineNode.physicsBody?.categoryBitMask = 0
-            lineNode.position = linePosition
-            linePosition.y +=  2 * middleLineHeight
-            self.barriers.append(lineNode)
-            lineNode.alpha = 0.0
-            self.addChild(lineNode)
-        }
+
         
         
         //Setup the walls
@@ -146,17 +135,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             restartNodeWidthHeight *= kIpadMultFactor
         }
         
+        //Middle line
+        var numberOfLines = 2
+        var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
+        for var i = 0; i < numberOfLines; i++ {
+            var lineNode: SKSpriteNode = SKSpriteNode(color: orangeColor, size: CGSizeMake(middleLineWidth, middleLineHeight))
+            lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
+            lineNode.physicsBody?.dynamic = false
+            lineNode.physicsBody?.categoryBitMask = 0
+            lineNode.position = linePosition
+            linePosition.y +=  2 * middleLineHeight
+            self.barriers.append(lineNode)
+            lineNode.alpha = 0.0
+            self.addChild(lineNode)
+        }
+        
         
         //Paddles
-        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.whiteColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
+        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: orangeColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
         self.addChild(self.playerOnePaddleNode)
-        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: SKColor.whiteColor(), category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
+        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: orangeColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
         self.addChild(self.playerTwoPaddleNode)
         
         //Score Labels
-        self.playerOneScoreNode = NodesCreator.createScoreLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width * 0.25, yPos: size.height - scoreFontSize * 2.0)
+        self.playerOneScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: orangeColor, xPos: size.width * 0.25, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerOneScoreNode)
-        self.playerTwoScoreNode = NodesCreator.createScoreLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width * 0.75, yPos: size.height - scoreFontSize * 2.0)
+        self.playerTwoScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: orangeColor, xPos: size.width * 0.75, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerTwoScoreNode)
 
         //Restart node
@@ -176,9 +180,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.startGameInfoNode.addChild(self.outlineGameInfoNode)
         
         self.backgroundStartGameInfoNode = SKShapeNode(rectOfSize: CGSize(width: self.startGameInfoNode.fontSize * 5.5, height: self.startGameInfoNode.fontSize * 1.8), cornerRadius: 20)
-        self.backgroundStartGameInfoNode.fillColor = UIColor.whiteColor()
-        self.backgroundStartGameInfoNode.alpha = 0.45
-        //self.backgroundStartGameInfoNode.zPosition = -1
+        self.backgroundStartGameInfoNode.fillColor = UIColor.lightGrayColor()
+        self.backgroundStartGameInfoNode.alpha = 0.55
+        self.backgroundStartGameInfoNode.zPosition = -1
         self.backgroundStartGameInfoNode.lineWidth = 0
         self.backgroundStartGameInfoNode.position = CGPoint(x: 0, y: self.startGameInfoNode.fontSize/3)
         self.startGameInfoNode.addChild(self.backgroundStartGameInfoNode)
@@ -186,6 +190,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //winner info node
         self.winnerInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.whiteColor(), xPos: size.width / 2.0, yPos: size.height / 4.0, text: "")
         self.addChild(self.winnerInfoNode)
+        
+        self.outlineWinnerInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor.blackColor(), xPos: 2, yPos: 2, text: winnerInfoNode.text)
+        self.outlineWinnerInfoNode.zPosition = -1
+        self.winnerInfoNode.addChild(self.outlineWinnerInfoNode)
+        
+        self.backgroundWinnerInfoNode = SKShapeNode(rectOfSize: CGSize(width: self.winnerInfoNode.fontSize * 6.5, height: self.winnerInfoNode.fontSize * 1.8), cornerRadius: 20)
+        self.backgroundWinnerInfoNode.fillColor = UIColor.lightGrayColor()
+        self.backgroundWinnerInfoNode.alpha = 0.55
+        self.backgroundWinnerInfoNode.zPosition = -1
+        self.backgroundWinnerInfoNode.lineWidth = 0
+        self.backgroundWinnerInfoNode.position = CGPoint(x: 0, y: self.startGameInfoNode.fontSize/3)
+        self.backgroundWinnerInfoNode.hidden = true
+        self.winnerInfoNode.addChild(self.backgroundWinnerInfoNode)
         
         //set scores to 0
         self.playerOneScore = 0
@@ -207,6 +224,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func startPlayingTheGame() {
         
+        self.backgroundWinnerInfoNode.hidden = true
         self.isPlayingGame = true
         self.startGameInfoNode.hidden = true
         self.winnerInfoNode.hidden = true
@@ -299,18 +317,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if (self.playerOneScore == highScore)&&(highScore != 0) {
             self.runAction(self.endGameSoundAction)
             self.playerOneScoreNode.removeAllActions()
+            self.backgroundWinnerInfoNode.hidden = false
             self.winnerInfoNode.text = "Player 1 wins!"
+            self.outlineWinnerInfoNode.text = "Player 1 wins!"
             self.restartTheGame()
         }else if (self.playerTwoScore == highScore)&&(highScore != 0) {
             self.runAction(self.endGameSoundAction)
             self.playerTwoScoreNode.removeAllActions()
+            self.backgroundWinnerInfoNode.hidden = false
             self.winnerInfoNode.text = "Player 2 wins!"
+            self.outlineWinnerInfoNode.text = "Player 2 wins!"
             self.restartTheGame()
         }
         //animation for winner label
         //animateScore(3)
         animateLabel()
-        self.winnerInfoNode.color = SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0)
+        self.winnerInfoNode.color = SKColor.whiteColor()
+        //self.winnerInfoNode.color = SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0)
         self.winnerInfoNode.colorBlendFactor = 0.0
         
         let duration:NSTimeInterval = 4.0
