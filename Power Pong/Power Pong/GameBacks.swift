@@ -63,12 +63,36 @@ import UIKit
         }else{
             dropDownMenu.menuIconImage = UIImage(named: "black")
         }
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
+            dropDownMenu.direction = DropDownMenuDirection.Right
+        }
+        else{
+            dropDownMenu.direction = DropDownMenuDirection.Down
+        }
+        
+        //Use the sizes of the view to know what is the best size to the items
+        //Big side of the view, width -10 is a bug of the class
+        let bigSide: CGFloat = ((self.frame.size.width-10) > self.frame.size.height) ? (self.frame.size.width-10) : self.frame.size.height
+        //Small side of the view, width -10 is a bug of the class
+        let smallSide: CGFloat = ((self.frame.size.width-10) < self.frame.size.height) ? (self.frame.size.width-10) : self.frame.size.height
+        //Check if the problem is the big or the small side
+        var size: CGFloat = (smallSide < bigSide/CGFloat(self.dataImage.count+1)) ? smallSide : bigSide/CGFloat(self.dataImage.count+1)
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
+            dropDownMenu.frame = CGRectMake(0, 0, size, size)
+        }
+        else{
+            //40 because iPhone the sizes dont work, I dont know why
+            dropDownMenu.frame = CGRectMake(0, 0, 40, 40)
+        }
+        
         dropDownMenu.dropDownItems = dropdownItems as [AnyObject]
-        dropDownMenu.paddingLeft = 10
-        dropDownMenu.frame = CGRectMake((self.frame.size.width/2) - 150, 0, 50, 40)
+        dropDownMenu.paddingLeft = 0
+        //dropDownMenu.frame = CGRectMake((self.frame.size.width/2) - 150, 0, 50, 40)
         dropDownMenu.delegate = self
         dropDownMenu.type = DropDownMenuType.Stack
-        dropDownMenu.gutterY = 5
+        dropDownMenu.gutterY = 0
         dropDownMenu.itemAnimationDelay = 0.1
         dropDownMenu.reloadView()
         

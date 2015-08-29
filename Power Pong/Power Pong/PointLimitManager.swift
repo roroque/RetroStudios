@@ -10,12 +10,18 @@ import UIKit
 
 class PointLimitManager : UIViewController {
     
-   // var pointLimitLabel = UILabel()
+    @IBOutlet weak var playerOneText: UITextField!
+    @IBOutlet weak var playerTwoText: UITextField!
     
     @IBOutlet weak var pointLimitLabel: UILabel!
     @IBOutlet weak var pointLimitStepper: UIStepper!
     
     override func viewDidLoad() {
+        
+        playerOneText.backgroundColor = UIColor.clearColor()
+        playerTwoText.backgroundColor = UIColor.clearColor()
+        
+        
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if (defaults.objectForKey("PointLimit") != nil){
@@ -31,6 +37,20 @@ class PointLimitManager : UIViewController {
             defaults.setInteger(5, forKey: "PointLimit")
             pointLimitStepper.value = 5
             pointLimitLabel.text = "Point limit: 5"
+        }
+        
+        if ((defaults.stringForKey("playerOneName")) != nil){
+            playerOneText.text = defaults.stringForKey("playerOneName")
+        }else{
+            defaults.setValue("Player 1" as String, forKey: "playerOneName")
+            playerOneText.text = "Player 1"
+        }
+        
+        if ((defaults.stringForKey("playerTwoName")) != nil){
+            playerTwoText.text = defaults.stringForKey("playerTwoName")
+        }else{
+            defaults.setValue("Player 2" as String, forKey: "playerTwoName")
+            playerTwoText.text = "Player 2"
         }
         
     }

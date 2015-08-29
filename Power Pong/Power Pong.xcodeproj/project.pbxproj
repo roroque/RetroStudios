@@ -122,7 +122,6 @@
 			children = (
 				FA00BB5D1B87912E002DF216 /* exampleFire.sks */,
 				FA00BB5E1B87912E002DF216 /* spark.png */,
-				08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */,
 				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
 				08882D561B8B8F0000278A5F /* GameBacks.swift */,
 				FA00BB631B879430002DF216 /* PowerUpController.swift */,
@@ -133,6 +132,7 @@
 		08D28A511B90C8A200017E0B /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				08D28A3C1B8CDDB600017E0B /* PointLimitManager.swift */,
 				08882D531B8B8BCA00278A5F /* DismissSegue.swift */,
 				FA73F5F91B82644200E35884 /* GameViewController.swift */,
 			);

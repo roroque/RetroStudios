@@ -28,6 +28,8 @@ typedef NS_ENUM(NSUInteger, DropDownMenuType) {
 typedef NS_ENUM(NSUInteger, DropDownMenuDirection) {
     DropDownMenuDirectionDown,
     DropDownMenuDirectionUp,
+    DropDownMenuDirectionRight,
+    DropDownMenuDirectionLeft
 };
 
 @protocol DropDownMenuDelegate <NSObject>

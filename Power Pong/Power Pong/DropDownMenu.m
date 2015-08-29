@@ -373,7 +373,7 @@
     CGFloat y = 0;
     CGFloat width = self.itemSize.width;
     CGFloat height = self.itemSize.height;
-    
+
 //    NSInteger count = index >= 2 ? 2 : index;
 //    CGFloat slidingInOffect = self.slidingInOffset != -1 ? self.slidingInOffset : self.itemSize.width / 3;
 //    
@@ -404,6 +404,8 @@
 //        default:
 //            break;
 //    }
+    
+    
     
     if (self.direction == DropDownMenuDirectionUp) {
         if (self.isExpanding) {
@@ -443,12 +445,21 @@
             break;
     }
     
-    if (self.direction == DropDownMenuDirectionUp) {
-        y = -y;
+    //Direction of the items
+    switch (self.direction) {
+        case DropDownMenuDirectionUp:
+            return CGRectMake(x, -y, width, height);
+            break;
+        case DropDownMenuDirectionRight:
+            return CGRectMake(y, x, width, height);
+            break;
+        case DropDownMenuDirectionLeft:
+            return CGRectMake(-y, x, width, height);
+            break;
+        default:
+            return CGRectMake(x, y, width, height);
+            break;
     }
-    
-    //directions of the balls
-    return CGRectMake(x, y, width, height);
 }
 
 - (CGAffineTransform)transformOnExpandForItemAtIndex:(NSInteger)index
