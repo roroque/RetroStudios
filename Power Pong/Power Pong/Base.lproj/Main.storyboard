@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="nfs-jq-T5s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -312,25 +312,25 @@
                                 <exclude reference="HnX-6H-UXd"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Cpq-Gx-zZP"/>
-                                <exclude reference="Imo-72-mcG"/>
                                 <exclude reference="F0Y-2V-Lhm"/>
                                 <exclude reference="cYm-ha-wGw"/>
                                 <exclude reference="4yT-5W-DgN"/>
                                 <exclude reference="NgC-CS-UKu"/>
                                 <exclude reference="KQx-O4-4kG"/>
+                                <exclude reference="Cpq-Gx-zZP"/>
+                                <exclude reference="Imo-72-mcG"/>
                                 <exclude reference="3UI-Mz-k8r"/>
                                 <exclude reference="8Jw-V9-xrG"/>
                                 <exclude reference="wo1-Ni-uQZ"/>
                                 <exclude reference="mAQ-xw-Rqk"/>
+                                <exclude reference="6uo-uc-IA9"/>
+                                <exclude reference="N5R-cf-VhM"/>
+                                <exclude reference="yZ1-TI-5Su"/>
                                 <exclude reference="C6a-LV-1SG"/>
                                 <exclude reference="GON-6s-06F"/>
                                 <exclude reference="ZsW-52-0vf"/>
                                 <exclude reference="tb3-85-dhZ"/>
                                 <exclude reference="wH6-fm-f9e"/>
-                                <exclude reference="6uo-uc-IA9"/>
-                                <exclude reference="N5R-cf-VhM"/>
-                                <exclude reference="yZ1-TI-5Su"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
@@ -345,11 +345,11 @@
                                 <include reference="Cpq-Gx-zZP"/>
                                 <include reference="Imo-72-mcG"/>
                                 <include reference="Sem-fX-HnV"/>
-                                <exclude reference="LP4-Qv-G0p"/>
-                                <include reference="wH6-fm-f9e"/>
                                 <include reference="6uo-uc-IA9"/>
                                 <exclude reference="N5R-cf-VhM"/>
                                 <include reference="k9k-nr-ga8"/>
+                                <exclude reference="LP4-Qv-G0p"/>
+                                <include reference="wH6-fm-f9e"/>
                             </mask>
                         </variation>
                     </view>

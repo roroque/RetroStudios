@@ -16,14 +16,14 @@ import UIKit
     var dataImage:NSArray = ["black.png",
         "grassBack.png",
         "basketBack.png",
-        "spaceBack.png",
+        "snooker",
         "usa.png",
         "brFlag.png"]
     
     var dataTitle:NSArray =  ["black",
         "grassBack",
         "basketBack",
-        "spaceBack",
+        "snooker",
         "usa",
         "brFlag"]
     

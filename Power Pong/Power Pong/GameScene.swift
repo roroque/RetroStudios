@@ -86,6 +86,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var failSoundAction : SKAction?
     var endGameSoundAction : SKAction?
     var fireballSoundAction : SKAction?
+    var countSoundAction : SKAction?
+    var goSoundAction : SKAction?
+    //countdown
+    var countDown : SKLabelNode!
+    //color
+    var gameColor : SKColor!
     
     var firstRound: Bool = true
     var paddleWithBall: Int = 1
@@ -150,17 +156,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             self.addChild(lineNode)
         }
         
+        //Set the colors of the paddles and labels
+        setGameColor()
         
         //Paddles
-        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: orangeColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
+        self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: gameColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
         self.addChild(self.playerOnePaddleNode)
-        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: orangeColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
+        self.playerTwoPaddleNode = PaddleCreator.create(.right, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: gameColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: CGRectGetMaxX(self.frame) - 2*paddleWidth)
         self.addChild(self.playerTwoPaddleNode)
         
         //Score Labels
-        self.playerOneScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: orangeColor, xPos: size.width * 0.25, yPos: size.height - scoreFontSize * 2.0)
+        self.playerOneScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: gameColor, xPos: size.width * 0.25, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerOneScoreNode)
-        self.playerTwoScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: orangeColor, xPos: size.width * 0.75, yPos: size.height - scoreFontSize * 2.0)
+        self.playerTwoScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: gameColor, xPos: size.width * 0.75, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerTwoScoreNode)
 
         //Restart node
@@ -170,6 +178,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Return to menu node
         self.returnToMenuNode = NodesCreator.createRestartGameNode("return", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)
         self.addChild(self.returnToMenuNode)
+        
+        //countDown
+        self.countDown = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize * 3, color: gameColor, xPos: size.width / 2.0, yPos: size.height / 2.0, text: "3")
+        self.addChild(self.countDown)
         
         //start game info node
         self.startGameInfoNode = NodesCreator.createInfoLabel("Helvetica", fontSize: scoreFontSize, color: SKColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1.0), xPos: size.width / 2.0, yPos: size.height / 2.0, text: "Tap to start!")
@@ -214,12 +226,56 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.failSoundAction = SKAction.playSoundFileNamed("Explosion.mp3", waitForCompletion: false)
         self.endGameSoundAction = SKAction.playSoundFileNamed("Ovation.mp3", waitForCompletion: false)
         self.fireballSoundAction = SKAction.playSoundFileNamed("Fireball.mp3", waitForCompletion: false)
-
+        self.countSoundAction = SKAction.playSoundFileNamed("bip.wav", waitForCompletion: false)
+        self.goSoundAction = SKAction.playSoundFileNamed("go.wav", waitForCompletion: false)
         
+        //countdown to start the game
+        let growAction = SKAction.scaleBy(1.2, duration: 0.4)
+        let shrinkAction = SKAction.scaleBy(0.8333, duration: 0.4)
+        let growAndShrink = SKAction.sequence([growAction, shrinkAction])
+        
+        self.startGameInfoNode.hidden = true
+        self.runAction(self.countSoundAction)
+        self.countDown.runAction(growAndShrink, completion: {
+            self.countDown.text = "2"
+            self.runAction(self.countSoundAction)
+            self.countDown.runAction(growAndShrink, completion: {
+                self.countDown.text = "1"
+                self.runAction(self.countSoundAction)
+                self.countDown.runAction(growAndShrink, completion: {
+                    self.countDown.text = "Go!"
+                    self.runAction(self.goSoundAction)
+                    self.countDown.runAction(growAndShrink, completion: {
+                        self.ballNode.first?.removeFromParent()
+                        self.startPlayingTheGame()
+                    })
+
+                })
+            })
+        })
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init()
+    }
+    
+    func setGameColor(){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.stringForKey("Back") == "black"{
+            gameColor = SKColor.whiteColor()
+        }else if defaults.stringForKey("Back") == "grassBack"{
+            gameColor = SKColor(red: 220/255, green: 225/255, blue: 219/255, alpha: 1.0)
+        }else if defaults.stringForKey("Back") == "basketBack"{
+            gameColor = SKColor(red: 178/255, green: 175/255, blue: 0/255, alpha: 1.0)
+        }else if defaults.stringForKey("Back") == "snooker"{
+            gameColor = SKColor(red: 1/255, green: 184/255, blue: 49/255, alpha: 1.0)
+        }else if defaults.stringForKey("Back") == "usa"{
+            gameColor = SKColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+        }else if defaults.stringForKey("Back") == "brFlag"{
+            gameColor = SKColor.yellowColor()
+        }else{
+            gameColor = orangeColor
+        }
     }
     
     func startPlayingTheGame() {
@@ -230,6 +286,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.winnerInfoNode.hidden = true
         //self.restartGameNode.hidden = false
         self.returnToMenuNode.hidden = true
+        self.countDown.hidden = true
 
         
         var ballWidth: CGFloat = kBallRadius * 2.0
@@ -295,6 +352,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         //Reset the scores
         self.playerOneScore = 0
         self.playerTwoScore = 0
+        
         //Update the labels
         self.updateScoreLabels()
         
@@ -466,13 +524,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         if point == 1{
             self.playerOneScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
-        }else if point == 2{
-            self.playerTwoScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
         }else{
-            self.winnerInfoNode.runAction(SKAction.repeatAction(growAndShrink, count: 4))
+            self.playerTwoScoreNode.runAction(SKAction.repeatAction(growAndShrink, count: 3))
         }
     }
-    
     
     func animateLabel(){
         let fadeOut = SKAction.fadeInWithDuration(0.09)
@@ -797,12 +852,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 }
                 self.returnToMenuNode.hidden = true
                 
-                if node != self.playerOnePaddleNode && node != self.playerTwoPaddleNode {
-                    //Start Playing
-                    self.ballNode.first?.removeFromParent()
-
-                    self.startPlayingTheGame()
-
+                if !firstRound{
+                    if node != self.playerOnePaddleNode && node != self.playerTwoPaddleNode {
+                        //Start Playing
+                        self.ballNode.first?.removeFromParent()
+                        self.startPlayingTheGame()
+                    }
                 }
                 
                 if self.playerOnePaddleControlTouch == nil {

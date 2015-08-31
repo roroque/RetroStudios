@@ -15,6 +15,8 @@
 		08D28A4A1B8E470300017E0B /* Woosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A491B8E470300017E0B /* Woosh.mp3 */; };
 		08D28A4C1B8E470B00017E0B /* Fireball.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A4B1B8E470B00017E0B /* Fireball.mp3 */; };
 		08D28A4E1B8E471700017E0B /* Ovation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 08D28A4D1B8E471700017E0B /* Ovation.mp3 */; };
+		1D4747231B93E43A00C19A61 /* bip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1D4747221B93E43A00C19A61 /* bip.wav */; };
+		1D4747251B93E57D00C19A61 /* go.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1D4747241B93E57D00C19A61 /* go.wav */; };
 		1DDBD6321B86AFD100319EB0 /* DropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */; };
 		1DDBD6331B86AFD100319EB0 /* DropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBD6311B86AFD100319EB0 /* DropDownMenu.m */; };
 		1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDBD6381B86CB7400319EB0 /* Lobster_1.3.otf */; };
@@ -53,6 +55,8 @@
 		08D28A491B8E470300017E0B /* Woosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Woosh.mp3; sourceTree = "<group>"; };
 		08D28A4B1B8E470B00017E0B /* Fireball.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Fireball.mp3; sourceTree = "<group>"; };
 		08D28A4D1B8E471700017E0B /* Ovation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ovation.mp3; sourceTree = "<group>"; };
+		1D4747221B93E43A00C19A61 /* bip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bip.wav; sourceTree = "<group>"; };
+		1D4747241B93E57D00C19A61 /* go.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = go.wav; sourceTree = "<group>"; };
 		1DDBD62D1B86AFD000319EB0 /* Power Pong-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Power Pong-Bridging-Header.h"; sourceTree = "<group>"; };
 		1DDBD62E1B86AFD100319EB0 /* DropDownItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownItem.h; sourceTree = "<group>"; };
 		1DDBD62F1B86AFD100319EB0 /* DropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownItem.m; sourceTree = "<group>"; };
@@ -109,6 +113,8 @@
 		08D28A4F1B8E471D00017E0B /* Audios */ = {
 			isa = PBXGroup;
 			children = (
+				1D4747241B93E57D00C19A61 /* go.wav */,
+				1D4747221B93E43A00C19A61 /* bip.wav */,
 				08D28A471B8E46FA00017E0B /* Explosion.mp3 */,
 				08D28A491B8E470300017E0B /* Woosh.mp3 */,
 				08D28A4D1B8E471700017E0B /* Ovation.mp3 */,
@@ -319,6 +325,8 @@
 				FA00BB601B87912E002DF216 /* spark.png in Resources */,
 				08D28A4E1B8E471700017E0B /* Ovation.mp3 in Resources */,
 				08D28A4A1B8E470300017E0B /* Woosh.mp3 in Resources */,
+				1D4747231B93E43A00C19A61 /* bip.wav in Resources */,
+				1D4747251B93E57D00C19A61 /* go.wav in Resources */,
 				FA73F5F61B82644200E35884 /* GameScene.sks in Resources */,
 				FA73F5FD1B82644200E35884 /* Main.storyboard in Resources */,
 				1DDBD6391B86CB7400319EB0 /* Lobster_1.3.otf in Resources */,
@@ -484,10 +492,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Power Pong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Power Pong/Power Pong-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -498,10 +508,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Power Pong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Power Pong/Power Pong-Bridging-Header.h";
 			};
 			name = Release;
@@ -510,8 +522,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -532,8 +544,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Igor Souza (HBR2JZGBP8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
