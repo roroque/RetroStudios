@@ -226,7 +226,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.failSoundAction = SKAction.playSoundFileNamed("Explosion.mp3", waitForCompletion: false)
         self.endGameSoundAction = SKAction.playSoundFileNamed("Ovation.mp3", waitForCompletion: false)
         self.fireballSoundAction = SKAction.playSoundFileNamed("Fireball.mp3", waitForCompletion: false)
-        self.countSoundAction = SKAction.playSoundFileNamed("bip.wav", waitForCompletion: false)
+        self.countSoundAction = SKAction.playSoundFileNamed("count.wav", waitForCompletion: false)
         self.goSoundAction = SKAction.playSoundFileNamed("go.wav", waitForCompletion: false)
         
         //countdown to start the game
