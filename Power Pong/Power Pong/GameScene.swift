@@ -592,10 +592,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             flamingTimer++
             if flamingTimer >= flamingLimit{
                 println("apaguei")
-                let velocity = self.ballNode.first!.physicsBody!.velocity
                 for i in self.ballNode
                 {
-                    i.physicsBody!.velocity = CGVectorMake(velocity.dx / 2  , velocity.dy / 2)
+                    i.physicsBody!.velocity = CGVectorMake(i.physicsBody!.velocity.dx / 2  , i.physicsBody!.velocity.dy / 2)
                 }
                 resetFlames()
                 
@@ -689,6 +688,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
+        if firstBody.categoryBitMask == ballCategory
+        {
+            if (firstBody.velocity.dx * firstBody.velocity.dx) < 5
+            {
+                if firstBody.velocity.dx < 0
+                {
+                    firstBody.velocity.dx = -10
+                }
+                else
+                {
+                    firstBody.velocity.dx = 10
+                }
+            }
+        }
       
         //check if passed through a powerUp
         if firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == powerUpCategory
@@ -712,13 +725,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 resetPowerUp()
                 self.runAction(self.fireballSoundAction)
 
-                let velocity = self.ballNode.first!.physicsBody!.velocity
-
                 for i in self.ballNode
                 {
                     let selectedFlame = SKEmitterNode(fileNamed: "exampleFire")
                     self.flames.append(selectedFlame)
-                    i.physicsBody!.velocity = CGVectorMake(velocity.dx * 2 , velocity.dy * 2)
+                    i.physicsBody!.velocity = CGVectorMake(i.physicsBody!.velocity.dx * 2 , i.physicsBody!.velocity.dy * 2)
                     i.addChild(selectedFlame)
                     selectedFlame.targetNode = self
                 }
