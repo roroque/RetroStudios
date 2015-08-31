@@ -22,8 +22,7 @@ let kPaddleMoveMult: CGFloat = 1.5 //multiply factor when moving fingers to move
 var powerUpShouldAppear = 0 //powerUp counter till some powerUp should appear
 let powerUpTime = 10//time till powerUp appears
 var highScore = 3//maximum punctuation of the game
-var middleLineWidth: CGFloat = 4.0
-var middleLineHeight: CGFloat = 80.0
+
 let orangeColor = SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0)
 
 //categories for detecting contacts between nodes
@@ -130,6 +129,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var paddleHeight: CGFloat = kPaddleHeight
         var scoreFontSize: CGFloat = kScoreFontSize
         var restartNodeWidthHeight: CGFloat = kRestartGameWidthHeight
+        var middleLineWidth: CGFloat = 4.0
+        var middleLineHeight: CGFloat = 80.0
+
         
         //Scale for iPad
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad{
@@ -145,7 +147,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var numberOfLines = 2
         var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
         for var i = 0; i < numberOfLines; i++ {
+            
             var lineNode: SKSpriteNode = SKSpriteNode(color: orangeColor, size: CGSizeMake(middleLineWidth, middleLineHeight))
+            println(lineNode.size)
             lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
             lineNode.physicsBody?.dynamic = false
             lineNode.physicsBody?.categoryBitMask = 0
@@ -688,7 +692,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
-        if firstBody.categoryBitMask == ballCategory
+        if firstBody.categoryBitMask == ballCategory && self.isPlayingGame
         {
             if (firstBody.velocity.dx * firstBody.velocity.dx) < 5
             {
