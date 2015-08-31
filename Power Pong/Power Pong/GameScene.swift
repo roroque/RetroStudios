@@ -76,6 +76,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     //score
     var playerOneScore : Int = 0
     var playerTwoScore : Int = 0
+    //player
+    var playerOneName : SKLabelNode!
+    var playerTwoName : SKLabelNode!
     //timer for speed-up
     var speedupTimer : NSTimer?
     //timer for powerUp
@@ -111,8 +114,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0)
-
         
+        //Set the colors of the paddles and labels
+        setGameColor()
         
         //Setup the walls
         var topWall = NodesCreator.createWall(CGSizeMake(self.size.width, 1), category: cornerCategory, position: CGPointMake(self.size.width/2, self.size.height))
@@ -148,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var linePosition: CGPoint = CGPointMake(size.width / 2.0, middleLineHeight * 1.5)
         for var i = 0; i < numberOfLines; i++ {
             
-            var lineNode: SKSpriteNode = SKSpriteNode(color: orangeColor, size: CGSizeMake(middleLineWidth, middleLineHeight))
+            var lineNode: SKSpriteNode = SKSpriteNode(color: gameColor, size: CGSizeMake(middleLineWidth, middleLineHeight))
             println(lineNode.size)
             lineNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(middleLineWidth, middleLineHeight))
             lineNode.physicsBody?.dynamic = false
@@ -159,9 +163,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             lineNode.alpha = 0.0
             self.addChild(lineNode)
         }
-        
-        //Set the colors of the paddles and labels
-        setGameColor()
         
         //Paddles
         self.playerOnePaddleNode = PaddleCreator.create(.left, paddleWidth: paddleWidth, paddleHeight: paddleHeight, color: gameColor, category: paddleCategory, initialYPos: CGRectGetMidY(self.frame), initialXPos: 2*paddleWidth)
@@ -174,6 +175,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(self.playerOneScoreNode)
         self.playerTwoScoreNode = NodesCreator.createScoreLabel("Helvetica-Bold", fontSize: scoreFontSize * 1.5, color: gameColor, xPos: size.width * 0.75, yPos: size.height - scoreFontSize * 2.0)
         self.addChild(self.playerTwoScoreNode)
+        
+        //Player names
+        self.playerOneName = NodesCreator.playerNameLabel("Helvetica-Bold", fontSize: scoreFontSize / 2, color: gameColor, xPos: size.width * 0.25, yPos: size.height - scoreFontSize / 1.5, text: defaults.stringForKey("playerOneName")!)
+        self.addChild(self.playerOneName)
+        self.playerTwoName = NodesCreator.playerNameLabel("Helvetica-Bold", fontSize: scoreFontSize / 2, color: gameColor, xPos: size.width * 0.75, yPos: size.height - scoreFontSize / 1.5, text: defaults.stringForKey("playerTwoName")!)
+        self.addChild(self.playerTwoName)
 
         //Restart node
         //self.restartGameNode = NodesCreator.createRestartGameNode("restartNode.png", height: restartNodeWidthHeight, width: restartNodeWidthHeight, xPos: size.width / 2.0, yPos:  size.height - restartNodeWidthHeight)

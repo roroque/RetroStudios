@@ -18,6 +18,15 @@ class NodesCreator: NSObject {
         return label
     }
     
+    static func playerNameLabel(font: String, fontSize: CGFloat, color: SKColor, xPos: CGFloat, yPos: CGFloat, text: String) -> SKLabelNode {
+        var label = SKLabelNode(fontNamed: font)
+        label.fontColor = color
+        label.fontSize = fontSize
+        label.position = CGPointMake(xPos, yPos)
+        label.text = text
+        return label
+    }
+    
  
     static func createInfoLabel(font: String, fontSize: CGFloat, color: SKColor, xPos: CGFloat, yPos: CGFloat, text: String) -> SKLabelNode{
         var label = SKLabelNode(fontNamed: "Helvetica")
