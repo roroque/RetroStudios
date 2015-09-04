@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import iAd
 
 //extension SKNode {
 //    class func unarchiveFromFile(file : String) -> SKNode? {
@@ -29,10 +30,14 @@ protocol returnToMenu: class {
     func returnToMenu()
 }
 
+//iAd
+var adBannerView: ADBannerView!
 
-class GameViewController: UIViewController, returnToMenu, SKSceneDelegate {
+class GameViewController: UIViewController, returnToMenu, SKSceneDelegate, ADBannerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadAds()
 
         var skView: SKView = self.view as! SKView
         skView.showsFPS = false
@@ -72,6 +77,39 @@ class GameViewController: UIViewController, returnToMenu, SKSceneDelegate {
     
     func returnToMenu() {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func loadAds() {
+        adBannerView = ADBannerView(frame: CGRectZero)
+        adBannerView.delegate = self
+        adBannerView.hidden = true
+        view.addSubview(adBannerView)
+    }
+    
+    func bannerViewWillLoadAd(banner: ADBannerView!) {
+        println("Ad about to load")
+    }
+    
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        adBannerView.center = CGPoint(x: adBannerView.center.x, y: view!.bounds.size.height - view!.bounds.size.height + adBannerView.frame.size.height / 2)
+        
+        adBannerView.layer.position = CGPoint(x: view.layer.position.x, y: view.frame.size.height - 35)
+        
+        adBannerView.hidden = false
+        println("Displaying the Ad")
+    }
+    
+    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
+        println("Leave the application to the Ad")
+        return true
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        //move off bounds when add didnt load
+        
+        adBannerView.center = CGPoint(x: adBannerView.center.x, y: view!.bounds.size.height + view!.bounds.size.height)
+        
+        println("Ad is not available")
     }
     
 }

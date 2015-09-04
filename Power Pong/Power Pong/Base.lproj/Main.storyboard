@@ -86,7 +86,7 @@
                                 </variation>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Pong" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="38" translatesAutoresizingMaskIntoConstraints="NO" id="fCj-AW-3Xk">
-                                <rect key="frame" x="-50" y="40" width="700" height="160"/>
+                                <rect key="frame" x="-50" y="48" width="700" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="314" id="DDm-Xj-APh">
                                         <variation key="heightClass=compact" constant="400"/>
@@ -284,9 +284,9 @@
                             <constraint firstItem="gi7-aJ-TpW" firstAttribute="top" secondItem="vac-SG-Zex" secondAttribute="bottom" constant="5" id="PZo-Ib-wHW"/>
                             <constraint firstAttribute="centerX" secondItem="xyI-CP-RdT" secondAttribute="centerX" id="RR5-NR-4Rv"/>
                             <constraint firstItem="DPd-yC-uyx" firstAttribute="centerX" secondItem="b7J-mN-eKf" secondAttribute="centerX" id="Sem-fX-HnV"/>
-                            <constraint firstItem="fCj-AW-3Xk" firstAttribute="top" secondItem="GQZ-hK-czU" secondAttribute="bottom" constant="20" id="YcV-8f-BfA"/>
+                            <constraint firstItem="fCj-AW-3Xk" firstAttribute="top" secondItem="GQZ-hK-czU" secondAttribute="bottom" constant="28" id="YcV-8f-BfA"/>
                             <constraint firstItem="gi7-aJ-TpW" firstAttribute="top" secondItem="mmJ-6z-UnS" secondAttribute="bottom" constant="8" id="ZsW-52-0vf"/>
-                            <constraint firstItem="KFR-qB-1bC" firstAttribute="top" secondItem="fCj-AW-3Xk" secondAttribute="bottom" constant="10" id="c7y-cv-NJ3"/>
+                            <constraint firstItem="KFR-qB-1bC" firstAttribute="top" secondItem="fCj-AW-3Xk" secondAttribute="bottom" constant="2" id="c7y-cv-NJ3"/>
                             <constraint firstItem="b7J-mN-eKf" firstAttribute="width" secondItem="mmJ-6z-UnS" secondAttribute="width" id="cYm-ha-wGw"/>
                             <constraint firstAttribute="width" secondItem="vac-SG-Zex" secondAttribute="width" multiplier="3" id="cy4-6R-jmr"/>
                             <constraint firstItem="gi7-aJ-TpW" firstAttribute="top" secondItem="mmJ-6z-UnS" secondAttribute="bottom" constant="8" symbolic="YES" id="fzL-JX-fPl"/>

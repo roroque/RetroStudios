@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import iAd
 
-class PointLimitManager : UIViewController {
+//iAd
+var adBannerMainView: ADBannerView!
+
+class PointLimitManager : UIViewController, ADBannerViewDelegate{
     
     @IBOutlet weak var playerOneText: UITextField!
     @IBOutlet weak var playerTwoText: UITextField!
@@ -17,6 +21,8 @@ class PointLimitManager : UIViewController {
     @IBOutlet weak var pointLimitStepper: UIStepper!
     
     override func viewDidLoad() {
+        
+        loadAds()
         
         playerOneText.backgroundColor = UIColor.clearColor()
         playerTwoText.backgroundColor = UIColor.clearColor()
@@ -66,5 +72,38 @@ class PointLimitManager : UIViewController {
         
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setInteger(Int(sender.value), forKey: "PointLimit")
+    }
+    
+    func loadAds() {
+        adBannerMainView = ADBannerView(frame: CGRectZero)
+        adBannerMainView.delegate = self
+        adBannerMainView.hidden = true
+        view.addSubview(adBannerMainView)
+    }
+    
+    func bannerViewWillLoadAd(banner: ADBannerView!) {
+        println("Ad about to load")
+    }
+    
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        adBannerMainView.center = CGPoint(x: adBannerMainView.center.x, y: view!.bounds.size.height - view!.bounds.size.height + adBannerMainView.frame.size.height / 2)
+        
+        adBannerMainView.layer.position = CGPoint(x: view.layer.position.x, y: 20)
+        
+        adBannerMainView.hidden = false
+        println("Displaying the Ad")
+    }
+    
+    func bannerViewActionShouldBegin(banner: ADBannerView!, willLeaveApplication willLeave: Bool) -> Bool {
+        println("Leave the application to the Ad")
+        return true
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        //move off bounds when add didnt load
+        
+        adBannerMainView.center = CGPoint(x: adBannerMainView.center.x, y: view!.bounds.size.height + view!.bounds.size.height)
+        
+        println("Ad is not available")
     }
 }

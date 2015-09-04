@@ -61,7 +61,7 @@ import UIKit
         if let name = defaults.stringForKey("Back"){
             dropDownMenu.menuIconImage = UIImage(named: "\(name).png")
         }else{
-            dropDownMenu.menuIconImage = UIImage(named: "black")
+            dropDownMenu.menuIconImage = UIImage(named: "black.png")
         }
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad{

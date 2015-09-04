@@ -7,6 +7,7 @@
 
 
 import SpriteKit
+import iAd
 
 let kPaddleWidth: CGFloat = 20.0 //width of the paddles
 let kPaddleHeight: CGFloat = 80.0 //height of the paddles
@@ -23,8 +24,6 @@ var powerUpShouldAppear = 0 //powerUp counter till some powerUp should appear
 let powerUpTime = 10//time till powerUp appears
 var highScore = 3//maximum punctuation of the game
 
-let orangeColor = SKColor(red: 218/255, green: 91/255, blue: 28/255, alpha: 1.0)
-
 //categories for detecting contacts between nodes
 let ballCategory : UInt32 = 0x1 << 0
 let cornerCategory : UInt32 = 0x1 << 1
@@ -33,7 +32,7 @@ let powerUpCategory : UInt32 = 0x1 << 3
 let leftWallCategory : UInt32 = 0x1 << 4
 let rightWallCategory : UInt32 = 0x1 << 5
 
-class GameScene: SKScene, SKPhysicsContactDelegate{
+class GameScene: SKScene, SKPhysicsContactDelegate, ADBannerViewDelegate{
     
     var isPlayingGame: Bool = false
     //ball node
@@ -285,7 +284,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }else if defaults.stringForKey("Back") == "brFlag"{
             gameColor = SKColor.yellowColor()
         }else{
-            gameColor = orangeColor
+            gameColor = SKColor.whiteColor()
         }
     }
     

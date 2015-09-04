@@ -80,7 +80,7 @@ class NodesCreator: NSObject {
         if let name = defaults.stringForKey("Back"){
             background = SKSpriteNode(imageNamed: "\(name)")
         }else{
-            background = SKSpriteNode(imageNamed: "Background")
+            background = SKSpriteNode(imageNamed: "black")
         }
         
         background.position = CGPointMake(size.width/2, size.height/2)
