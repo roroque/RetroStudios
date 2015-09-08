@@ -34,6 +34,7 @@
 		FA73F5FF1B82644200E35884 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA73F5FE1B82644200E35884 /* Images.xcassets */; };
 		FA73F6021B82644200E35884 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA73F6001B82644200E35884 /* LaunchScreen.xib */; };
 		FA73F60E1B82644200E35884 /* Power_PongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73F60D1B82644200E35884 /* Power_PongTests.swift */; };
+		FAD212D91B9F0F930050DCD6 /* laser.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAD212D81B9F0F930050DCD6 /* laser.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		FA73F6071B82644200E35884 /* Power PongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Power PongTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA73F60C1B82644200E35884 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA73F60D1B82644200E35884 /* Power_PongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Power_PongTests.swift; sourceTree = "<group>"; };
+		FAD212D81B9F0F930050DCD6 /* laser.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = laser.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				1DDBD63C1B86E09000319EB0 /* GameBalls.swift */,
 				08882D561B8B8F0000278A5F /* GameBacks.swift */,
 				FA00BB631B879430002DF216 /* PowerUpController.swift */,
+				FAD212D81B9F0F930050DCD6 /* laser.sks */,
 			);
 			name = "Game Classes";
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				08D28A4E1B8E471700017E0B /* Ovation.mp3 in Resources */,
 				08D28A4A1B8E470300017E0B /* Woosh.mp3 in Resources */,
 				1D4747251B93E57D00C19A61 /* go.wav in Resources */,
+				FAD212D91B9F0F930050DCD6 /* laser.sks in Resources */,
 				1D47472C1B93FD7100C19A61 /* count.wav in Resources */,
 				FA73F5F61B82644200E35884 /* GameScene.sks in Resources */,
 				FA73F5FD1B82644200E35884 /* Main.storyboard in Resources */,
@@ -522,8 +526,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gabriel Neves Ferreira (JSQFTER9JR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gabriel Neves Ferreira (JSQFTER9JR)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -544,8 +548,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gabriel Neves Ferreira (JSQFTER9JR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gabriel Neves Ferreira (JSQFTER9JR)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

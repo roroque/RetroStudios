@@ -57,7 +57,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ADBannerViewDelegate{
     var playerOneScoreNode : SKLabelNode!
     var playerTwoScoreNode : SKLabelNode!
     //restart game node
-    //var restartGameNode : SKSpriteNode!
     //Return to menu node
     var returnToMenuNode : SKSpriteNode!
     //start game info node
@@ -562,6 +561,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ADBannerViewDelegate{
         powerUpShouldAppear++
         if powerUpShouldAppear >= powerUpTime
         {
+            let emitter1 =  SKEmitterNode(fileNamed: "laser")
+            emitter1.position = CGPointMake( self.playerOnePaddleNode.frame.width / 2 , (self.size.height / 2) - (self.playerOnePaddleNode.frame.height / 2))
+            let emitter2 = SKEmitterNode(fileNamed: "laser")
+            emitter2.position = emitter1.position
+            emitter2.position.y = emitter2.position.y + self.playerOnePaddleNode.frame.height
+            self.addChild(emitter1)
+            self.addChild(emitter2)
+            emitter1.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: self.playerOnePaddleNode.frame.width, height: 20))
+            emitter2.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: self.playerOnePaddleNode.frame.width, height: 20))
+
+            
+            emitter1.physicsBody?.collisionBitMask = 0
+            emitter2.physicsBody?.collisionBitMask = 0
+
+            emitter1.physicsBody?.velocity.dx = 400
+            emitter2.physicsBody?.velocity.dx = 400
+            
             
             if barried
             {
@@ -835,7 +851,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ADBannerViewDelegate{
                 var location: CGPoint = touch.locationInNode(self)
                 
                 
-                //Check if a powerUp is being clicked
                 let node = self.nodeAtPoint(location)
                 
                 if node == self.returnToMenuNode{
